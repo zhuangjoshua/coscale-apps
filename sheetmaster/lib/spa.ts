@@ -2,17 +2,20 @@ import fs from "fs";
 import path from "path";
 
 /**
- * Serves the Takyon-built SheetSmile marketing SPA (React, client-routed).
- * The shell HTML is a snapshot copied from the Takyon site's dist/; assets
- * live under public/assets and public/proto-assets.
+ * Marketing site: live-proxied from the Takyon preview server (port 8833).
+ * Every request fetches the current shell from 8833, so Takyon rebuilds show
+ * up immediately — no snapshot re-sync. If 8833 is down, we fall back to the
+ * last snapshot in lib/spa-index.html.
  *
- * The bundle renders a few links we can't rewrite statically (they're inside
- * the compiled JS), so we inject a click interceptor that fixes them at
- * runtime: legacy .html links become app routes, and dead "#" CTAs (Sign in /
- * Get Started) go to the real Google sign-in.
+ * The bundle renders a few links we can't fix statically (they're inside the
+ * compiled JS), so we inject a click interceptor: legacy .html links become
+ * app routes, and dead "#" CTAs (Sign in / Get Started) go to Google sign-in.
  */
 
-const SHELL_PATH = path.join(process.cwd(), "lib", "spa-index.html");
+const MARKETING_ORIGIN =
+  process.env.MARKETING_ORIGIN || "http://localhost:8833";
+
+const FALLBACK_SHELL = path.join(process.cwd(), "lib", "spa-index.html");
 
 const LINK_FIX_SCRIPT = `<script>
 document.addEventListener("click", function (e) {
@@ -28,18 +31,22 @@ document.addEventListener("click", function (e) {
 }, true);
 </script>`;
 
-let cached: string | null = null;
-
-export function loadSpaShell(): string {
-  if (cached) return cached;
-  let html = fs.readFileSync(SHELL_PATH, "utf8");
-  html = html.replace("</body>", `${LINK_FIX_SCRIPT}</body>`);
-  cached = html;
-  return html;
+async function loadShell(): Promise<string> {
+  try {
+    const res = await fetch(`${MARKETING_ORIGIN}/`, { cache: "no-store" });
+    if (res.ok) return await res.text();
+  } catch {
+    /* preview server down — use snapshot */
+  }
+  return fs.readFileSync(FALLBACK_SHELL, "utf8");
 }
 
-export function spaResponse(): Response {
-  return new Response(loadSpaShell(), {
+export async function spaResponse(): Promise<Response> {
+  const html = (await loadShell()).replace(
+    "</body>",
+    `${LINK_FIX_SCRIPT}</body>`
+  );
+  return new Response(html, {
     headers: { "Content-Type": "text/html; charset=utf-8" },
   });
 }
