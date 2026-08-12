@@ -37,15 +37,25 @@ export default async function Dashboard() {
             <li key={f.id}>
               <Link
                 href={`/dashboard/${f.id}`}
-                className="block rounded-brand border bg-white p-4 hover:border-primary"
+                className="group block rounded-brand border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-foreground">{f.name}</span>
+                  <span className="font-medium text-foreground group-hover:text-primary">
+                    {f.name}
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     {f.submission_count} submissions
                   </span>
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">/f/{f.id}</div>
+                <div className="mt-1 flex items-center justify-between text-sm text-muted-foreground">
+                  <span>/f/{f.id}</span>
+                  <span className="font-medium text-primary">
+                    Manage{" "}
+                    <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </span>
+                </div>
               </Link>
             </li>
           ))}
@@ -54,14 +64,14 @@ export default async function Dashboard() {
           )}
         </ul>
 
+        <h2 className="mt-12 text-2xl font-bold text-foreground">
+          Create a New Form
+        </h2>
         <form
           action="/api/forms"
           method="POST"
-          className="mt-10 rounded-brand border bg-white p-6 space-y-4"
+          className="mt-6 rounded-brand border bg-white p-6 space-y-4"
         >
-          <h2 className="text-lg font-semibold text-foreground">
-            Create a New Form
-          </h2>
           <div>
             <label className="block text-sm font-medium text-[#3d3a35]">
               Form name
