@@ -23,7 +23,11 @@ export default function AppHeader({
           className="flex items-center gap-2 font-semibold tracking-[0.14em] text-foreground"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" className="h-7 w-auto" />
+          <img
+            src="/logo.png"
+            alt=""
+            style={{ height: 28, width: "auto" }}
+          />
           SheetSmile
         </Link>
         <nav className="flex items-center gap-1">
