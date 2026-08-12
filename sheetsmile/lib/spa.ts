@@ -60,6 +60,11 @@ export function spaResponse(): Response {
   if (!cached) {
     cached = fs
       .readFileSync(SHELL_PATH, "utf8")
+      // The Takyon shell points at a favicon.svg we don't ship — use the logo,
+      // and match the brand's casing in the tab title.
+      .replaceAll('type="image/svg+xml" href="/favicon.svg"', 'href="/logo.png"')
+      .replaceAll('href="/favicon.svg"', 'href="/logo.png"')
+      .replaceAll("Sheetsmile", "SheetSmile")
       .replace("</body>", `${LINK_FIX_SCRIPT}</body>`);
   }
   return new Response(cached, {
