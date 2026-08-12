@@ -32,6 +32,26 @@ document.addEventListener("click", function (e) {
     e.preventDefault(); location.href = "/api/auth/login";
   }
 }, true);
+
+// Put the logo next to the brand wordmark in the site's header and footer.
+// React re-renders can wipe injected nodes, so re-apply on DOM changes.
+function smAddLogo() {
+  document.querySelectorAll(".brand, .footer-brand").forEach(function (el) {
+    if (el.querySelector("[data-sm-logo]")) return;
+    var img = document.createElement("img");
+    img.src = "/logo.png";
+    img.alt = "";
+    img.setAttribute("data-sm-logo", "1");
+    img.style.cssText =
+      "height:1.5em;width:auto;vertical-align:-0.35em;margin-right:0.5em;display:inline-block";
+    el.prepend(img);
+  });
+}
+new MutationObserver(smAddLogo).observe(document.documentElement, {
+  childList: true,
+  subtree: true,
+});
+smAddLogo();
 </script>`;
 
 let cached: string | null = null;
