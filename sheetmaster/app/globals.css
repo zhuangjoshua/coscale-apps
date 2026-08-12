@@ -37,6 +37,13 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  /* Same stack the landing page's compiled CSS actually renders with */
   font-family:
-    -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    "Avenir Next", Montserrat, "Segoe UI", system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
 }
