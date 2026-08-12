@@ -66,7 +66,7 @@ export function spaResponse(): Response {
       // re-request a path it already has, so bump the filename to force it.
       .replace(
         '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />',
-        '<link rel="icon" type="image/png" sizes="256x256" href="/sheetsmile-icon-v2.png" />'
+        '<link rel="icon" type="image/png" sizes="256x256" href="/sheetsmile-icon-v3.png" />'
       )
       .replace(
         '<link rel="apple-touch-icon" href="/favicon.svg" />',
