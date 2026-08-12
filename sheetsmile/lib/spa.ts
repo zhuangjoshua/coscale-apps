@@ -62,9 +62,11 @@ export function spaResponse(): Response {
       .readFileSync(SHELL_PATH, "utf8")
       // The Takyon shell points at a favicon.svg we don't ship. Swap in the
       // real icons — Safari needs a genuine .ico and honours explicit tags.
+      // Icon URL is versioned: Safari caches favicons by URL and will not
+      // re-request a path it already has, so bump the filename to force it.
       .replace(
         '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />',
-        '<link rel="icon" href="/favicon.ico" sizes="any" />\n    <link rel="icon" type="image/png" sizes="256x256" href="/icon-256.png" />'
+        '<link rel="icon" type="image/png" sizes="256x256" href="/sheetsmile-icon-v2.png" />'
       )
       .replace(
         '<link rel="apple-touch-icon" href="/favicon.svg" />',
