@@ -25,10 +25,37 @@ document.addEventListener("click", function (e) {
   var text = (a.textContent || "").trim();
   if (href === "product.html") { e.preventDefault(); location.href = "/product"; }
   else if (href === "blog.html") { e.preventDefault(); location.href = "/blog"; }
+  else if (href === "#" && /how it works/i.test(text)) {
+    e.preventDefault(); location.href = "/how-it-works";
+  }
   else if (href === "#" && /sign in|get started/i.test(text)) {
     e.preventDefault(); location.href = "/api/auth/login";
   }
 }, true);
+
+// Add "How It Works" and "Dashboard" tabs to the SPA's nav. React re-renders
+// can wipe injected nodes, so re-apply whenever the header changes.
+function smAddNavTabs() {
+  var nav = document.querySelector("header nav");
+  if (!nav || nav.querySelector("[data-sm-tab]")) return;
+  var anchor = nav.querySelector("a"); // first existing link, for styling
+  function make(label, href) {
+    var a = document.createElement("a");
+    a.textContent = label;
+    a.href = href;
+    a.setAttribute("data-sm-tab", "1");
+    if (anchor) a.className = anchor.className;
+    return a;
+  }
+  var pill = nav.querySelector(".nav-login, .pill");
+  nav.insertBefore(make("How It Works", "/how-it-works"), pill);
+  nav.insertBefore(make("Dashboard", "/app"), pill);
+}
+new MutationObserver(smAddNavTabs).observe(document.documentElement, {
+  childList: true,
+  subtree: true,
+});
+smAddNavTabs();
 </script>`;
 
 let cached: string | null = null;
