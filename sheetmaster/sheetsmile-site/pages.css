@@ -1,0 +1,44 @@
+/* TAKYON:PAGES-BASE:START (code-owned; model CSS is appended below the END marker) */
+/* Interior pages have no hero behind the nav: force the shell nav's SOLIDIFIED state
+   (page background + ink, no scroll animation, no hero text-shadows) so the chrome is
+   readable from the first pixel. Code-owned — page CSS may not touch the shell. */
+body:has(main[data-takyon-page]) .site-nav { background: var(--page-bg); color: var(--ink); animation: none; }
+body:has(main[data-takyon-page]) .site-nav :is(a, span, strong) { color: inherit; text-shadow: none; }
+/* Pin the content ink to the palette: on a dark landing (--page-bg near black) the
+   browser-default black text is invisible (live-proven: meridian's legal pages). */
+main[data-takyon-page] { display: block; width: min(88%, 62rem); margin: 0 auto; padding: 7.5rem 0 5rem; color: var(--ink); background: var(--page-bg); }
+/* Page titles mirror the landing's section-title role exactly, centered (operator). */
+main[data-takyon-page] .page-title { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 300; font-size: clamp(30px, 3.2cqw, 38.4px); line-height: 1.16; letter-spacing: 0.005em; text-align: center; margin: 0 0 1.6em; }
+main[data-takyon-page] :is(p, li, dd) { font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); line-height: 1.6; }
+main[data-takyon-page] :is(h2, h3, dt) { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; }
+main[data-takyon-page='privacy'] section, main[data-takyon-page='terms'] section { margin-bottom: 2.2em; }
+main[data-takyon-page='blog'] .blog-empty { text-align: center; max-width: 34rem; margin: 0 auto; }
+main[data-takyon-page='blog'] .blog-empty-lead { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; font-size: clamp(1.05rem, 1.35cqw, 1.3rem); }
+main[data-takyon-page='blog'] .blog-empty a { color: var(--accent); }
+/* Constrained-width content blocks center in the page column (live-proven: a
+   model-set max-width left the faq list hugging the left edge). */
+main[data-takyon-page] :is(.faq-list, .plan-card) { margin-inline: auto; }
+/* FAQ accordion (native <details>, no JS): bar summaries with a +/- indicator. */
+main[data-takyon-page='faq'] details.faq-item { margin: 0 0 0.7em; }
+main[data-takyon-page='faq'] summary.faq-q { display: flex; align-items: center; justify-content: space-between; gap: 1em; cursor: pointer; list-style: none; padding: 0.95em 1.2em; border-radius: 0.6rem; background: color-mix(in srgb, var(--ink) 8%, var(--page-bg)); color: var(--ink); font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; font-size: clamp(1.05rem, 1.35cqw, 1.3rem); }
+main[data-takyon-page='faq'] summary.faq-q::-webkit-details-marker { display: none; }
+main[data-takyon-page='faq'] summary.faq-q::after { content: '+'; font-weight: 600; color: var(--ink); flex: none; }
+main[data-takyon-page='faq'] details[open] summary.faq-q::after { content: '\2212'; }
+main[data-takyon-page='faq'] .faq-a { padding: 1em 1.2em 1.4em; }
+/* TAKYON:PAGES-BASE:END */
+
+/* TAKYON:PAGE-CSS:pricing:START */
+main[data-takyon-page='pricing'] .plan-card { max-width: 38rem; margin-top: 0.5rem; }
+main[data-takyon-page='pricing'] .plan-card .card-content { padding: 2.4rem 2rem 2rem; }
+main[data-takyon-page='pricing'] .plan-card h2 { font-size: clamp(1.25rem, 1.55cqw, 1.55rem); margin: 0 0 0.3em; }
+main[data-takyon-page='pricing'] .plan-price { font-size: clamp(2.2rem, 3cqw, 2.8rem); font-weight: 300; margin: 0 0 0.6em; letter-spacing: -0.015em; }
+main[data-takyon-page='pricing'] .plan-interval { font-size: 0.45em; font-weight: 400; color: var(--ink-soft); }
+main[data-takyon-page='pricing'] .plan-card ul { list-style: none; padding: 0; margin: 0 0 1.8em; }
+main[data-takyon-page='pricing'] .plan-card li { padding: 0.45em 0 0.45em 1.5em; position: relative; }
+main[data-takyon-page='pricing'] .plan-card li::before { content: '>'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+main[data-takyon-page='pricing'] .plan-card .pill { display: inline-block; text-align: center; width: 100%; box-sizing: border-box; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 0.75em 2em; text-decoration: none; font-weight: 600; }
+/* TAKYON:PAGE-CSS:pricing:END */
+
+/* TAKYON:PAGE-CSS:faq:START */
+main[data-takyon-page='faq'] .faq-list { max-width: 42rem; }
+/* TAKYON:PAGE-CSS:faq:END */

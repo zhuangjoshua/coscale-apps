@@ -1,0 +1,636 @@
+const DEFAULT_FRONTEND_API_MODE = "prefixed_runtime_api";
+const ALLOW_CALL_STATES = new Set(["live", "declared"]);
+const RECORD_REF_PATTERN = /^tkr_[0-9a-f]{32}$/;
+
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function normalizeArray(values) {
+  if (!Array.isArray(values)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const value of values) {
+    const text = String(value || "").trim();
+    if (!text || seen.has(text)) continue;
+    seen.add(text);
+    out.push(text);
+  }
+  return out;
+}
+
+function normalizeRailState(raw) {
+  if (!isObject(raw)) return {};
+  const out = {};
+  for (const [key, value] of Object.entries(raw)) {
+    const rail = String(key || "").trim();
+    const rawState = String(value || "").trim().toLowerCase();
+    const state =
+      rawState === "unverified" || rawState === "unknown" ? "declared" : rawState;
+    if (!rail || !state) continue;
+    out[rail] = state;
+  }
+  return out;
+}
+
+function normalizeRoute(route) {
+  return String(route || "").replace(/^\/+/, "");
+}
+
+function joinRoute(base, route) {
+  const cleanRoute = normalizeRoute(route);
+  const cleanBase = String(base || "").trim().replace(/\/+$/, "");
+  return cleanBase ? `${cleanBase}/${cleanRoute}` : `/${cleanRoute}`;
+}
+
+function encodeRoutePart(value) {
+  return encodeURIComponent(String(value || "").trim());
+}
+
+// A RecordRef is a server-owned opaque locator, never an authorization capability. Clients only
+// preserve it byte-for-byte; the backend resolves it under the current business/session scope.
+function requireRecordRef(ref) {
+  if (typeof ref !== "string" || !RECORD_REF_PATTERN.test(ref)) {
+    throw new TypeError(
+      "record_ref is invalid; pass the ref returned by saveRecord, listRecords, or readRecord",
+    );
+  }
+  return ref;
+}
+
+function recordWithRef(record) {
+  if (!isObject(record)) throw new TypeError("record response is invalid");
+  const { id: _id, record_id: _recordId, ...publicRecord } = record;
+  return { ...publicRecord, ref: requireRecordRef(record.ref) };
+}
+
+function payloadWithRecordRefs(payload) {
+  if (!isObject(payload)) return payload;
+  const out = { ...payload };
+  if (isObject(payload.record)) {
+    const record = recordWithRef(payload.record);
+    out.record = record;
+    // Record mutations historically returned an envelope (`{ record }`), while a large class of
+    // generated screens consumed the result as the record itself. Keep the envelope for existing
+    // products and mirror its record fields at the top level so both shapes preserve the SAME
+    // runtime-owned ref. This is compatibility normalization, not a second record identity.
+    for (const [key, value] of Object.entries(record)) {
+      out[key] = value;
+    }
+    delete out.id;
+    delete out.record_id;
+  }
+  if (Array.isArray(payload.records)) out.records = payload.records.map(recordWithRef);
+  return out;
+}
+
+export function resolveSubuserRuntimeBase(config = {}) {
+  const runtimeApiBase = String(config.runtimeApiBase || "").trim();
+  return runtimeApiBase.replace(/\/+$/, "");
+}
+
+function publishedBuildId() {
+  try {
+    const globalValue = String(globalThis.__TAKYON_LIVE_BUILD_ID__ || "").trim();
+    if (globalValue) return globalValue;
+  } catch {
+    // Non-browser runtimes have no global build marker.
+  }
+  try {
+    return String(
+      document.querySelector('meta[name="takyon-live-build-id"]')?.getAttribute("content") || "",
+    ).trim();
+  } catch {
+    return "";
+  }
+}
+
+async function jsonRequest(url, init = {}) {
+  const buildId = publishedBuildId();
+  const response = await fetch(url, {
+    credentials: "same-origin",
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(buildId ? { "X-Takyon-Live-Build-Id": buildId } : {}),
+      ...(init.headers || {}),
+    },
+  });
+  const payload = await response
+    .json()
+    .catch(() => ({ success: false, error: `non_json_response:${response.status}` }));
+  if (!response.ok) {
+    const error = new Error(
+      String(payload.error || payload.detail || `request_failed:${response.status}`),
+    );
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
+  }
+  return payload;
+}
+
+function requireProductRuntimeContract(payload) {
+  const contract = isObject(payload) ? payload.product_runtime_contract : null;
+  const cancellation = isObject(contract?.subscription)
+    ? contract.subscription.cancellation
+    : null;
+  if (
+    !isObject(contract) ||
+    contract.version !== 1 ||
+    !isObject(cancellation) ||
+    cancellation.version !== 1 ||
+    cancellation.effective_timing !== "immediate" ||
+    cancellation.refund_policy !== "none" ||
+    !isObject(contract.records) ||
+    contract.records.identifier !== "opaque_ref"
+  ) {
+    throw new Error("invalid_product_runtime_contract");
+  }
+  return payload;
+}
+
+function requireImmediateCancellationResult(payload) {
+  const policy = isObject(payload) ? payload.subscription_cancellation_policy : null;
+  const status = String(isObject(payload) ? payload.stripe_subscription_status || "" : "")
+    .trim()
+    .toLowerCase();
+  if (
+    !isObject(payload) ||
+    payload.recorded !== true ||
+    payload.cancel_at_period_end !== false ||
+    payload.effective_immediately !== true ||
+    !["canceled", "cancelled"].includes(status) ||
+    !isObject(policy) ||
+    policy.version !== 1 ||
+    policy.effective_timing !== "immediate" ||
+    policy.refund_policy !== "none"
+  ) {
+    throw new Error("invalid_subscription_cancellation_result");
+  }
+  return payload;
+}
+
+function railUnavailableError(rail, state) {
+  const error = new Error(`rail_unavailable:${rail}:${state || "undeclared"}`);
+  error.rail = rail;
+  error.railState = state || "undeclared";
+  return error;
+}
+
+function defaultCheckoutUrl(kind, location) {
+  const current = new URL(location.href || location.origin || "http://localhost/");
+  current.searchParams.set("checkout", kind);
+  return current.toString();
+}
+
+function randomKeySuffix() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID().replaceAll("-", "");
+  }
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
+}
+
+function classifyActionError(error, { checkoutCallable = false, location } = {}) {
+  const status = Number(error && error.status) || 0;
+  const message = String((error && error.message) || "action failed");
+  let kind = "action_error";
+  if (error && error.rail) {
+    kind = "unavailable";
+  } else if (status === 402) {
+    kind = "budget";
+  } else if (status === 429) {
+    kind = message.includes("action_already_running") ? "already_running" : "rate_limited";
+  } else if (status === 404) {
+    kind = "unavailable";
+  } else if (/deadline|timed?[ _-]?out/i.test(message)) {
+    kind = "timeout";
+  } else if (!status) {
+    kind = "network";
+  }
+  const classified = new Error(message);
+  classified.kind = kind;
+  if (status) classified.status = status;
+  classified.cause = error;
+  if (kind === "budget" && checkoutCallable && location) {
+    classified.checkoutUrl = defaultCheckoutUrl("upgrade", location);
+  }
+  return classified;
+}
+
+export function createSubuserRuntimeClient(context = {}) {
+  const runtimeFeatures = normalizeArray(context.runtimeFeatures);
+  const railState = normalizeRailState(context.railState);
+  const frontendApiMode = String(
+    context.frontendApiMode || DEFAULT_FRONTEND_API_MODE,
+  ).trim();
+  const runtimeApiBase = String(context.runtimeApiBase || "").trim();
+  const location =
+    context.location ||
+    (typeof window !== "undefined" && window.location
+      ? window.location
+      : { hostname: "", href: "", pathname: "/", origin: "" });
+
+  function railStateFor(rail) {
+    if (railState[rail]) return railState[rail];
+    if (runtimeFeatures.includes(rail)) return "declared";
+    return "undeclared";
+  }
+
+  function ensureRail(rail) {
+    const state = railStateFor(rail);
+    if (!ALLOW_CALL_STATES.has(state)) {
+      throw railUnavailableError(rail, state);
+    }
+    return state;
+  }
+
+  function routeUrl(route) {
+    const base = resolveSubuserRuntimeBase({
+      runtimeApiBase,
+      frontendApiMode,
+      location,
+    });
+    return joinRoute(base, route);
+  }
+
+  return {
+    context: {
+      ...context,
+      frontendApiMode,
+      runtimeApiBase,
+      runtimeFeatures,
+      railState,
+    },
+    routeUrl,
+    railStateFor,
+    isRailCallable(rail) {
+      return ALLOW_CALL_STATES.has(railStateFor(rail));
+    },
+    buildVerifyUrl() {
+      ensureRail("auth");
+      throw new Error("Supabase Auth is the only supported product sign-in path. Magic-link verification URLs are disabled.");
+    },
+    async requestAuth() {
+      ensureRail("auth");
+      throw new Error("Supabase Auth is the only supported product sign-in path. Use loginWithSupabase(accessToken).");
+    },
+    async loginWithSupabase(accessToken, extra = {}) {
+      // Supabase Auth (Google/email) sign-in: complete the Supabase OAuth flow in the browser,
+      // then pass the Supabase access token here. Returns { success, session_token, app_user_id,
+      // email, tier, ... } — the session_token is the Takyon app credential for later calls.
+      ensureRail("auth");
+      return jsonRequest(routeUrl("auth/session"), {
+        method: "POST",
+        body: JSON.stringify({ access_token: accessToken, ...extra }),
+      });
+    },
+    async logout() {
+      ensureRail("auth");
+      return jsonRequest(routeUrl("session"), { method: "DELETE" });
+    },
+    async session() {
+      ensureRail("auth");
+      return jsonRequest(routeUrl("session"), { method: "GET" });
+    },
+    async account() {
+      ensureRail("account");
+      return requireProductRuntimeContract(
+        await jsonRequest(routeUrl("account"), { method: "GET" }),
+      );
+    },
+    async cancelSubscription() {
+      ensureRail("account");
+      return requireImmediateCancellationResult(
+        await jsonRequest(routeUrl("account"), {
+          method: "POST",
+          body: JSON.stringify({ action: "cancel_subscription" }),
+        }),
+      );
+    },
+    // Apple 5.1.1(v) account deletion. The server resolves the target user from the session — no
+    // id is sent. Callers should clear their local session after a success (the server clears the
+    // web session cookie for you).
+    async deleteAccount() {
+      ensureRail("account");
+      return jsonRequest(routeUrl("account"), { method: "DELETE" });
+    },
+    async profile() {
+      ensureRail("profile");
+      return jsonRequest(routeUrl("profile"), { method: "GET" });
+    },
+    async updateProfile(payload = {}) {
+      ensureRail("profile");
+      return jsonRequest(routeUrl("profile"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async listDirectory(options = {}) {
+      ensureRail("directory");
+      const params = new URLSearchParams();
+      if (options.limit != null && options.limit !== "") {
+        params.set("limit", String(options.limit));
+      }
+      const suffix = params.toString();
+      return jsonRequest(`${routeUrl("directory")}${suffix ? `?${suffix}` : ""}`, {
+        method: "GET",
+      });
+    },
+    async getDirectoryMe() {
+      ensureRail("directory");
+      return jsonRequest(routeUrl("directory/me"), { method: "GET" });
+    },
+    async getDirectoryEntry(appUserId) {
+      ensureRail("directory");
+      return jsonRequest(
+        routeUrl(`directory/${encodeRoutePart(appUserId)}`),
+        { method: "GET" },
+      );
+    },
+    async updateDirectoryMe(payload = {}) {
+      ensureRail("directory");
+      return jsonRequest(routeUrl("directory/me"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async disableDirectoryMe() {
+      ensureRail("directory");
+      return jsonRequest(routeUrl("directory/me"), { method: "DELETE" });
+    },
+    async listRecords(options = {}) {
+      ensureRail("records");
+      const recordType = String(options.record_type || options.type || "").trim();
+      // records-v2: a bounded server-side query when filters/sort/cursor are present;
+      // otherwise the plain newest-first GET list.
+      if (options.filters || options.sort || options.cursor) {
+        return payloadWithRecordRefs(await jsonRequest(routeUrl("records/query"), {
+          method: "POST",
+          body: JSON.stringify({
+            record_type: recordType || undefined,
+            filters: options.filters || [],
+            sort: options.sort || undefined,
+            cursor: options.cursor || undefined,
+            limit: options.limit != null && options.limit !== "" ? options.limit : undefined,
+          }),
+        }));
+      }
+      const params = new URLSearchParams();
+      if (recordType) params.set("type", recordType);
+      if (options.limit != null && options.limit !== "") {
+        params.set("limit", String(options.limit));
+      }
+      const suffix = params.toString();
+      return payloadWithRecordRefs(await jsonRequest(`${routeUrl("records")}${suffix ? `?${suffix}` : ""}`, {
+        method: "GET",
+      }));
+    },
+    async getRecord(ref) {
+      ensureRail("records");
+      return payloadWithRecordRefs(await jsonRequest(
+        routeUrl(`records/by-ref/${encodeRoutePart(requireRecordRef(ref))}`),
+        { method: "GET" },
+      ));
+    },
+    async readRecord(ref) {
+      ensureRail("records");
+      return payloadWithRecordRefs(await jsonRequest(
+        routeUrl(`records/by-ref/${encodeRoutePart(requireRecordRef(ref))}`),
+        { method: "GET" },
+      ));
+    },
+    async saveRecord(payload = {}) {
+      ensureRail("records");
+      if (!Object.prototype.hasOwnProperty.call(payload, "data") || payload.data == null) {
+        throw new TypeError("data is required");
+      }
+      if (payload.record_ref != null || payload.id != null || payload.record_id != null) {
+        throw new TypeError("raw record identifiers are not accepted; use the runtime-owned ref");
+      }
+      const suppliedRef = payload.ref == null ? "" : requireRecordRef(payload.ref);
+      const suppliedTypes = [payload.record_type, payload.type]
+        .map((value) => String(value || "").trim())
+        .filter(Boolean);
+      if (new Set(suppliedTypes).size > 1) {
+        throw new TypeError("record_type does not match the supplied type");
+      }
+      const suppliedType = suppliedTypes[0] || "";
+      if (suppliedRef && suppliedType) {
+        throw new TypeError("record_type cannot accompany a ref update");
+      }
+      if (!suppliedRef && !suppliedType) {
+        throw new Error("record_type is required");
+      }
+      const route = suppliedRef
+        ? `records/by-ref/${encodeRoutePart(suppliedRef)}`
+        : "records";
+      const { ref: _ref, record_type: _recordType, type: _type, ...recordPayload } = payload;
+      return payloadWithRecordRefs(await jsonRequest(routeUrl(route), {
+        method: "POST",
+        body: JSON.stringify({
+          ...recordPayload,
+          ...(suppliedType ? { record_type: suppliedType } : {}),
+        }),
+      }));
+    },
+    async deleteRecord(ref) {
+      ensureRail("records");
+      return payloadWithRecordRefs(await jsonRequest(
+        routeUrl(`records/by-ref/${encodeRoutePart(requireRecordRef(ref))}`),
+        { method: "DELETE" },
+      ));
+    },
+    async checkout(payload = {}) {
+      ensureRail("checkout");
+      const response = await jsonRequest(routeUrl("checkout"), {
+        method: "POST",
+        body: JSON.stringify({
+          ...payload,
+          success_url:
+            payload.success_url ||
+            payload.successUrl ||
+            defaultCheckoutUrl("success", location),
+          cancel_url:
+            payload.cancel_url ||
+            payload.cancelUrl ||
+            defaultCheckoutUrl("cancel", location),
+        }),
+      });
+      if (response && response.checkout_url && !response.url) {
+        response.url = response.checkout_url;
+      }
+      return response;
+    },
+    async recordUsage(payload = {}) {
+      ensureRail("usage");
+      return jsonRequest(routeUrl("usage"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async uploadMedia(file) {
+      ensureRail("media");
+      if (!file) {
+        throw new Error("a file is required");
+      }
+      const form = new FormData();
+      form.append("file", file);
+      // Do NOT set Content-Type — the browser sets the multipart boundary itself.
+      const response = await fetch(routeUrl("media"), {
+        method: "POST",
+        credentials: "same-origin",
+        body: form,
+      });
+      const payload = await response
+        .json()
+        .catch(() => ({ success: false, error: `non_json_response:${response.status}` }));
+      if (!response.ok) {
+        const error = new Error(String(payload.error || `media_upload_failed:${response.status}`));
+        error.status = response.status;
+        error.payload = payload;
+        throw error;
+      }
+      return payload;
+    },
+    mediaUrl(id) {
+      ensureRail("media");
+      return routeUrl(`media/${encodeRoutePart(id)}`);
+    },
+    async deleteMedia(id) {
+      ensureRail("media");
+      return jsonRequest(routeUrl(`media/${encodeRoutePart(id)}`), { method: "DELETE" });
+    },
+    async listConnections(options = {}) {
+      ensureRail("connections");
+      const params = new URLSearchParams();
+      const state = String(options.state || "").trim();
+      if (state) params.set("state", state);
+      if (options.limit != null && options.limit !== "") {
+        params.set("limit", String(options.limit));
+      }
+      const suffix = params.toString();
+      return jsonRequest(`${routeUrl("connections")}${suffix ? `?${suffix}` : ""}`, {
+        method: "GET",
+      });
+    },
+    async actOnConnection(payload = {}) {
+      ensureRail("connections");
+      return jsonRequest(routeUrl("connections"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async generate(payload = {}) {
+      ensureRail("generate");
+      return jsonRequest(routeUrl("generate"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async search(payload = {}) {
+      // Metered web search/extract through the shared search authority (reserve→settle against the
+      // app budget). payload: { operation:'search', query, depth, max_results } or
+      // { operation:'extract', urls:[...] }. Returns { success, results, usage } — never a provider key.
+      ensureRail("search");
+      return jsonRequest(routeUrl("search"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async egress(payload = {}) {
+      // Keyless credentialed egress to an operator-approved third party (delta 6). payload:
+      // { connection, method, path, headers?, body?, query? }. The credential is held by Takyon
+      // and attached SERVER-SIDE only for the connection's own host; each call is metered through
+      // the usage rail. Returns { success, status, headers, body } — never a provider key. Treat
+      // 402 as out-of-credit, 403 as a policy refusal, 404 as unknown/not-yet-approved connection.
+      ensureRail("egress");
+      return jsonRequest(routeUrl("egress"), {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    },
+    async invokeAction(name, payload = {}, options = {}) {
+      ensureRail("actions");
+      const actionName = String(name || "").trim();
+      if (!actionName) {
+        throw new Error("action name is required");
+      }
+      const envelope = await jsonRequest(routeUrl(`actions/${encodeRoutePart(actionName)}`), {
+        method: "POST",
+        body: JSON.stringify({
+          payload,
+          idempotency_key:
+            options.idempotency_key ||
+            options.idempotencyKey ||
+            undefined,
+        }),
+      });
+      // Return the action's own result, not the transport envelope (matches createActionRunner.run).
+      return envelope && typeof envelope === "object" && "result" in envelope
+        ? envelope.result
+        : envelope;
+    },
+    createActionRunner(name) {
+      const actionName = String(name || "").trim();
+      if (!actionName) {
+        throw new Error("action name is required");
+      }
+      let pending = false;
+      let replayKey = "";
+      return {
+        action: actionName,
+        state() {
+          return pending ? "pending" : "idle";
+        },
+        async run(payload = {}, options = {}) {
+          if (pending) {
+            const busy = new Error(`action ${actionName} is already running`);
+            busy.kind = "already_running";
+            throw busy;
+          }
+          pending = true;
+          const idempotencyKey =
+            options.idempotency_key ||
+            options.idempotencyKey ||
+            replayKey ||
+            `action:${actionName}:${randomKeySuffix()}`;
+          try {
+            ensureRail("actions");
+            const envelope = await jsonRequest(
+              routeUrl(`actions/${encodeRoutePart(actionName)}`),
+              {
+                method: "POST",
+                body: JSON.stringify({ payload, idempotency_key: idempotencyKey }),
+              },
+            );
+            replayKey = "";
+            // Return the action's OWN result, not the transport envelope, so product code reads the
+            // fields the action returned (e.g. `result.polished`) — matching how actions are written.
+            return envelope && typeof envelope === "object" && "result" in envelope
+              ? envelope.result
+              : envelope;
+          } catch (error) {
+            const classified = classifyActionError(error, {
+              checkoutCallable: ALLOW_CALL_STATES.has(railStateFor("checkout")),
+              location,
+            });
+            // Replay the same key only when the request may never have reached the
+            // runtime; reusing it after a server outcome would double-charge.
+            replayKey = classified.kind === "network" ? idempotencyKey : "";
+            throw classified;
+          } finally {
+            pending = false;
+          }
+        },
+      };
+    },
+    usageFromAccount(accountPayload = {}) {
+      return accountPayload && isObject(accountPayload.usage_this_period)
+        ? accountPayload.usage_this_period
+        : null;
+    },
+  };
+}
+
+export { DEFAULT_FRONTEND_API_MODE };
