@@ -24,6 +24,16 @@
   --radius-brand: 10px;
 }
 
+/* Tailwind v4 defaults borders to currentColor; the brand wants soft warm
+   gray lines everywhere a bare `border` class is used. */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

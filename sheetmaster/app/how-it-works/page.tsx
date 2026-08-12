@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { getSessionUser } from "@/lib/session";
+import AppHeader from "@/app/AppHeader";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "How It Works — SheetSmile",
@@ -82,10 +86,15 @@ function SiteHeader() {
   );
 }
 
-export default function HowItWorks() {
+export default async function HowItWorks() {
+  const user = await getSessionUser();
   return (
     <main className="min-h-screen bg-[#faf9f7]">
-      <SiteHeader />
+      {user ? (
+        <AppHeader email={user.email} active="how-it-works" />
+      ) : (
+        <SiteHeader />
+      )}
 
       <div className="mx-auto max-w-4xl px-4 py-14">
         <h1 className="text-4xl font-bold text-foreground">How it works</h1>

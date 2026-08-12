@@ -4,6 +4,7 @@ import db, { Form } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import { parseSchema, FormSchema } from "@/lib/formschema";
 import Builder from "./Builder";
+import AppHeader from "@/app/AppHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -30,16 +31,19 @@ export default async function BuilderPage({
 
   return (
     <main className="min-h-screen bg-[#faf9f7]">
-      <header className="border-b bg-white px-6 py-4 flex items-center justify-between">
-        <Link
-          href={`/dashboard/${form.id}`}
-          className="text-sm text-primary hover:underline"
-        >
-          ← Back to form
-        </Link>
-        <span className="text-sm text-muted-foreground">Form Builder · {form.name}</span>
-      </header>
+      <AppHeader email={user.email} active="dashboard" />
       <div className="mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-4 flex items-center justify-between">
+          <Link
+            href={`/dashboard/${form.id}`}
+            className="text-sm text-primary hover:underline"
+          >
+            ← Back to form
+          </Link>
+          <span className="text-sm text-muted-foreground">
+            Form Builder · {form.name}
+          </span>
+        </div>
         <Builder formId={form.id} initialSchema={schema} />
       </div>
     </main>

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import db, { Form } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import NewFormFields from "./NewFormFields";
+import AppHeader from "@/app/AppHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -16,15 +17,7 @@ export default async function Dashboard() {
 
   return (
     <main className="min-h-screen bg-[#faf9f7]">
-      <header className="border-b bg-white px-6 py-4 flex items-center justify-between">
-        <span className="font-semibold tracking-[0.14em] text-foreground">SheetSmile</span>
-        <div className="text-sm text-muted-foreground">
-          {user.email} ·{" "}
-          <a href="/api/auth/logout" className="text-primary hover:underline">
-            Sign out
-          </a>
-        </div>
-      </header>
+      <AppHeader email={user.email} active="dashboard" />
 
       <div className="mx-auto max-w-3xl px-4 py-10">
         {user.grant_broken === 1 && (

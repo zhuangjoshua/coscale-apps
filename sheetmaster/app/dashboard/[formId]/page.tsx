@@ -4,6 +4,7 @@ import db, { Form, Submission } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import { parseSchema, generateHtmlExport } from "@/lib/formschema";
 import ShareTabs from "./ShareTabs";
+import AppHeader from "@/app/AppHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -39,15 +40,17 @@ export default async function FormDetail({
 
   return (
     <main className="min-h-screen bg-[#faf9f7]">
-      <header className="border-b bg-white px-6 py-4">
-        <Link href="/dashboard" className="text-sm text-primary hover:underline">
-          ← Back to dashboard
-        </Link>
-      </header>
+      <AppHeader email={user.email} active="dashboard" />
 
       <div className="mx-auto max-w-3xl px-4 py-10 space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">{form.name}</h1>
+          <Link
+            href="/dashboard"
+            className="text-sm text-primary hover:underline"
+          >
+            ← Back to dashboard
+          </Link>
+          <h1 className="mt-2 text-2xl font-bold text-foreground">{form.name}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Writes to sheet tab “{form.sheet_name}” ·{" "}
             <a
