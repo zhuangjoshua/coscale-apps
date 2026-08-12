@@ -154,17 +154,19 @@ export default async function HowItWorks() {
           ))}
         </div>
 
-        <div className="mt-16 rounded-brand border border-line bg-white p-8 text-center">
-          <h2 className="text-2xl font-bold text-foreground">
-            See a row appear in your sheet in the next two minutes
-          </h2>
-          <a
-            href="/app"
-            className="mt-5 inline-block rounded-full bg-primary px-6 py-2.5 font-medium text-white hover:bg-primary-dark"
-          >
-            Get Started Free
-          </a>
-        </div>
+        {!user && (
+          <div className="mt-16 rounded-brand border border-line bg-white p-8 text-center">
+            <h2 className="text-2xl font-bold text-foreground">
+              See a row appear in your sheet in the next two minutes
+            </h2>
+            <a
+              href="/app"
+              className="mt-5 inline-block rounded-full bg-primary px-6 py-2.5 font-medium text-white hover:bg-primary-dark"
+            >
+              Get Started Free
+            </a>
+          </div>
+        )}
       </div>
     </main>
   );
