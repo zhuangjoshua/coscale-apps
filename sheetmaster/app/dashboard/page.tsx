@@ -32,7 +32,7 @@ export default async function Dashboard() {
             <strong>Google connection broken.</strong> We can no longer write
             to your sheets — submissions are failing. This happens if you
             revoked access or changed your password.{" "}
-            <a href="/api/auth/login" className="font-medium underline">
+            <a href="/api/auth/login?consent=1" className="font-medium underline">
               Reconnect Google
             </a>
           </div>
