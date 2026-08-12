@@ -15,12 +15,12 @@ export default async function Dashboard() {
     .all(user.id) as Form[];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-[#faf9f7]">
       <header className="border-b bg-white px-6 py-4 flex items-center justify-between">
-        <span className="font-bold text-gray-900">SheetSmile</span>
-        <div className="text-sm text-gray-600">
+        <span className="font-semibold tracking-[0.14em] text-foreground">SheetSmile</span>
+        <div className="text-sm text-muted-foreground">
           {user.email} ·{" "}
-          <a href="/api/auth/logout" className="text-blue-600 hover:underline">
+          <a href="/api/auth/logout" className="text-primary hover:underline">
             Sign out
           </a>
         </div>
@@ -28,7 +28,7 @@ export default async function Dashboard() {
 
       <div className="mx-auto max-w-3xl px-4 py-10">
         {user.grant_broken === 1 && (
-          <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+          <div className="mb-6 rounded-brand border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
             <strong>Google connection broken.</strong> We can no longer write
             to your sheets — submissions are failing. This happens if you
             revoked access or changed your password.{" "}
@@ -37,49 +37,49 @@ export default async function Dashboard() {
             </a>
           </div>
         )}
-        <h1 className="text-2xl font-bold text-gray-900">Your forms</h1>
+        <h1 className="text-2xl font-bold text-foreground">Your forms</h1>
 
         <ul className="mt-6 space-y-3">
           {forms.map((f) => (
             <li key={f.id}>
               <Link
                 href={`/dashboard/${f.id}`}
-                className="block rounded-lg border bg-white p-4 hover:border-blue-400"
+                className="block rounded-brand border bg-white p-4 hover:border-primary"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-900">{f.name}</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="font-medium text-foreground">{f.name}</span>
+                  <span className="text-sm text-muted-foreground">
                     {f.submission_count} submissions
                   </span>
                 </div>
-                <div className="mt-1 text-sm text-gray-500">/f/{f.id}</div>
+                <div className="mt-1 text-sm text-muted-foreground">/f/{f.id}</div>
               </Link>
             </li>
           ))}
           {forms.length === 0 && (
-            <li className="text-gray-500">No forms yet — create one below.</li>
+            <li className="text-muted-foreground">No forms yet — create one below.</li>
           )}
         </ul>
 
         <form
           action="/api/forms"
           method="POST"
-          className="mt-10 rounded-lg border bg-white p-6 space-y-4"
+          className="mt-10 rounded-brand border bg-white p-6 space-y-4"
         >
-          <h2 className="text-lg font-semibold text-gray-900">New form</h2>
+          <h2 className="text-lg font-semibold text-foreground">New form</h2>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-[#3d3a35]">
               Form name
             </label>
             <input
               name="name"
               required
               placeholder="Newsletter signup"
-              className="mt-1 w-full rounded-md border px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-brand border px-3 py-2 text-sm"
             />
           </div>
           <NewFormFields />
-          <button className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          <button className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark">
             Create form
           </button>
         </form>

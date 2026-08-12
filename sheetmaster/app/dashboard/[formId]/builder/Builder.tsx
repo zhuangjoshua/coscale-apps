@@ -66,21 +66,21 @@ function SortableFieldCard({
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`flex items-center gap-2 rounded-md border bg-white px-3 py-2 text-sm ${
-        selected ? "border-blue-500 ring-1 ring-blue-200" : "border-gray-200"
+      className={`flex items-center gap-2 rounded-brand border bg-white px-3 py-2 text-sm ${
+        selected ? "border-primary ring-1 ring-primary/30" : "border-line"
       }`}
     >
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab text-gray-400 hover:text-gray-600"
+        className="cursor-grab text-gray-400 hover:text-muted-foreground"
         title="Drag to reorder"
         type="button"
       >
         ⠿
       </button>
       <button type="button" onClick={onSelect} className="flex-1 text-left">
-        <span className="font-medium text-gray-800">{field.label}</span>{" "}
+        <span className="font-medium text-foreground">{field.label}</span>{" "}
         <span className="text-xs text-gray-400">
           {FIELD_TYPE_LABELS[field.type]}
           {field.required ? " · required" : ""}
@@ -159,21 +159,21 @@ export default function Builder({
   }
 
   const inputClass =
-    "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm";
+    "mt-1 w-full rounded-brand border border-line px-3 py-2 text-sm";
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       {/* Left: palette + field list */}
       <div className="space-y-4">
-        <section className="rounded-lg border bg-white p-4">
-          <h2 className="text-sm font-semibold text-gray-900">Add a field</h2>
+        <section className="rounded-brand border bg-white p-4">
+          <h2 className="text-sm font-semibold text-foreground">Add a field</h2>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {PALETTE.map((t) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => addField(t)}
-                className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:border-blue-400 hover:text-blue-600"
+                className="rounded-brand border border-line bg-[#faf9f7] px-2 py-1 text-xs text-[#3d3a35] hover:border-primary hover:text-primary"
               >
                 + {FIELD_TYPE_LABELS[t]}
               </button>
@@ -181,8 +181,8 @@ export default function Builder({
           </div>
         </section>
 
-        <section className="rounded-lg border bg-white p-4">
-          <h2 className="text-sm font-semibold text-gray-900">Fields</h2>
+        <section className="rounded-brand border bg-white p-4">
+          <h2 className="text-sm font-semibold text-foreground">Fields</h2>
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -203,7 +203,7 @@ export default function Builder({
                   />
                 ))}
                 {schema.fields.length === 0 && (
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted-foreground">
                     No fields yet — add one above.
                   </p>
                 )}
@@ -214,12 +214,12 @@ export default function Builder({
 
         {/* Field settings */}
         {selected && (
-          <section className="rounded-lg border bg-white p-4 space-y-3">
-            <h2 className="text-sm font-semibold text-gray-900">
+          <section className="rounded-brand border bg-white p-4 space-y-3">
+            <h2 className="text-sm font-semibold text-foreground">
               Field settings
             </h2>
             <div>
-              <label className="block text-xs font-medium text-gray-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 Label{" "}
                 <span className="font-normal text-gray-400">
                   (becomes the sheet column name)
@@ -235,7 +235,7 @@ export default function Builder({
             </div>
             {selected.type === "hidden" ? (
               <div>
-                <label className="block text-xs font-medium text-gray-600">
+                <label className="block text-xs font-medium text-muted-foreground">
                   Value
                 </label>
                 <input
@@ -249,7 +249,7 @@ export default function Builder({
             ) : (
               <>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600">
+                  <label className="block text-xs font-medium text-muted-foreground">
                     Placeholder
                   </label>
                   <input
@@ -261,7 +261,7 @@ export default function Builder({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600">
+                  <label className="block text-xs font-medium text-muted-foreground">
                     Instructions for visitors
                   </label>
                   <input
@@ -274,7 +274,7 @@ export default function Builder({
                     className={inputClass}
                   />
                 </div>
-                <label className="flex items-center gap-2 text-sm text-gray-700">
+                <label className="flex items-center gap-2 text-sm text-[#3d3a35]">
                   <input
                     type="checkbox"
                     checked={selected.required ?? false}
@@ -287,7 +287,7 @@ export default function Builder({
                 {(selected.type === "dropdown" ||
                   selected.type === "multiple_choice") && (
                   <div>
-                    <label className="block text-xs font-medium text-gray-600">
+                    <label className="block text-xs font-medium text-muted-foreground">
                       Options (one per line)
                     </label>
                     <textarea
@@ -310,10 +310,10 @@ export default function Builder({
 
       {/* Right: form settings + live preview */}
       <div className="space-y-4 lg:col-span-2">
-        <section className="rounded-lg border bg-white p-4">
+        <section className="rounded-brand border bg-white p-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 Form title
               </label>
               <input
@@ -326,7 +326,7 @@ export default function Builder({
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 Submit button text
               </label>
               <input
@@ -340,7 +340,7 @@ export default function Builder({
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-gray-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 Description
               </label>
               <input
@@ -358,7 +358,7 @@ export default function Builder({
               type="button"
               onClick={save}
               disabled={saveState === "saving"}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark disabled:opacity-50"
             >
               {saveState === "saving" ? "Saving…" : "Save form"}
             </button>
@@ -375,16 +375,16 @@ export default function Builder({
           </div>
         </section>
 
-        <section className="rounded-lg border bg-gray-100 p-6">
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <section className="rounded-brand border bg-muted p-6">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Live preview
           </h2>
           <div className="mx-auto max-w-lg rounded-xl border bg-white p-8 shadow-sm">
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-foreground">
               {schema.title || "Untitled form"}
             </h1>
             {schema.description && (
-              <p className="mt-2 text-sm text-gray-600">{schema.description}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{schema.description}</p>
             )}
             <div className="mt-6 space-y-5">
               {schema.fields
@@ -393,16 +393,16 @@ export default function Builder({
                   <div
                     key={f.id}
                     onClick={() => setSelectedId(f.id)}
-                    className={`cursor-pointer rounded-md p-1 -m-1 ${
-                      f.id === selectedId ? "ring-1 ring-blue-300" : ""
+                    className={`cursor-pointer rounded-brand p-1 -m-1 ${
+                      f.id === selectedId ? "ring-1 ring-primary/40" : ""
                     }`}
                   >
-                    <label className="block text-sm font-medium text-gray-800">
+                    <label className="block text-sm font-medium text-foreground">
                       {f.label}
                       {f.required && <span className="text-red-500"> *</span>}
                     </label>
                     {f.instructions && (
-                      <p className="text-xs text-gray-500">{f.instructions}</p>
+                      <p className="text-xs text-muted-foreground">{f.instructions}</p>
                     )}
                     {f.type === "paragraph" ? (
                       <textarea
@@ -423,7 +423,7 @@ export default function Builder({
                         {(f.options ?? []).map((o) => (
                           <label
                             key={o}
-                            className="flex items-center gap-2 text-sm text-gray-700"
+                            className="flex items-center gap-2 text-sm text-[#3d3a35]"
                           >
                             <input type="radio" disabled /> {o}
                           </label>
@@ -447,7 +447,7 @@ export default function Builder({
             <button
               type="button"
               disabled
-              className="mt-8 w-full rounded-lg bg-blue-600 px-4 py-2.5 font-medium text-white opacity-90"
+              className="mt-8 w-full rounded-full bg-primary px-4 py-2.5 font-medium text-white opacity-90"
             >
               {schema.submitLabel || "Submit"}
             </button>

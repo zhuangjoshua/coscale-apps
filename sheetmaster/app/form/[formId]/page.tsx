@@ -27,10 +27,10 @@ export default async function HostedForm({
     form.submission_count >= form.max_submissions;
   if (isClosed) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <main className="min-h-screen flex items-center justify-center bg-muted px-4">
         <div className="mx-auto max-w-lg rounded-xl border bg-white p-8 text-center shadow-sm">
-          <h1 className="text-2xl font-bold text-gray-900">{schema.title}</h1>
-          <p className="mt-3 text-gray-600">
+          <h1 className="text-2xl font-bold text-foreground">{schema.title}</h1>
+          <p className="mt-3 text-muted-foreground">
             This form is closed — all {form.max_submissions} spots have been
             taken. Thanks for your interest!
           </p>
@@ -46,10 +46,10 @@ export default async function HostedForm({
     : 0;
 
   const inputClass =
-    "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none";
+    "mt-1 w-full rounded-brand border border-line px-3 py-2 text-sm focus:border-primary focus:outline-none";
 
   return (
-    <main className="min-h-screen bg-gray-100 px-4 py-12">
+    <main className="min-h-screen bg-muted px-4 py-12">
       <div className="mx-auto max-w-lg">
         <form
           action={endpoint}
@@ -57,22 +57,22 @@ export default async function HostedForm({
           encType={hasFile ? "multipart/form-data" : undefined}
           className="rounded-xl border bg-white p-8 shadow-sm"
         >
-          <h1 className="text-2xl font-bold text-gray-900">{schema.title}</h1>
+          <h1 className="text-2xl font-bold text-foreground">{schema.title}</h1>
           {schema.description && (
-            <p className="mt-2 text-sm text-gray-600">{schema.description}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{schema.description}</p>
           )}
 
           {showBar && (
             <div className="mt-4">
-              <div className="flex justify-between text-xs font-medium text-gray-600">
+              <div className="flex justify-between text-xs font-medium text-muted-foreground">
                 <span>
                   {spotsTaken} of {form.max_submissions} spots taken
                 </span>
                 <span>{form.max_submissions! - spotsTaken} left</span>
               </div>
-              <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-line">
                 <div
-                  className="h-full rounded-full bg-blue-600"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: `${spotsPct}%` }}
                 />
               </div>
@@ -94,12 +94,12 @@ export default async function HostedForm({
               }
               return (
                 <div key={f.id}>
-                  <label className="block text-sm font-medium text-gray-800">
+                  <label className="block text-sm font-medium text-foreground">
                     {f.label}
                     {f.required && <span className="text-red-500"> *</span>}
                   </label>
                   {f.instructions && (
-                    <p className="text-xs text-gray-500">{f.instructions}</p>
+                    <p className="text-xs text-muted-foreground">{f.instructions}</p>
                   )}
                   {f.type === "paragraph" ? (
                     <textarea
@@ -123,7 +123,7 @@ export default async function HostedForm({
                       {(f.options ?? []).map((opt) => (
                         <label
                           key={opt}
-                          className="flex items-center gap-2 text-sm text-gray-700"
+                          className="flex items-center gap-2 text-sm text-[#3d3a35]"
                         >
                           <input
                             type="radio"
@@ -179,7 +179,7 @@ export default async function HostedForm({
           />
           <button
             type="submit"
-            className="mt-8 w-full rounded-lg bg-blue-600 px-4 py-2.5 font-medium text-white hover:bg-blue-700"
+            className="mt-8 w-full rounded-full bg-primary px-4 py-2.5 font-medium text-white hover:bg-primary-dark"
           >
             {schema.submitLabel || "Submit"}
           </button>

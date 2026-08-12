@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
+/* SheetSmile design tokens — mirrors the marketing site's tokens.css
+   (site source: Takyon product/site/src/tokens.css) so the app and the
+   landing pages read as one product. */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1815;
+  --primary: #0e7c6b;
+  --primary-dark: #0b6355;
+  --muted: #f0efec;
+  --muted-foreground: #6b6862;
+  --line: #e3e0da;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-line: var(--line);
+  --radius-brand: 10px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
 }

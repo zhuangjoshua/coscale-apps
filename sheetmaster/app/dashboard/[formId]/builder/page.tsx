@@ -29,15 +29,15 @@ export default async function BuilderPage({
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-[#faf9f7]">
       <header className="border-b bg-white px-6 py-4 flex items-center justify-between">
         <Link
           href={`/dashboard/${form.id}`}
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-primary hover:underline"
         >
           ← Back to form
         </Link>
-        <span className="text-sm text-gray-500">Form Builder · {form.name}</span>
+        <span className="text-sm text-muted-foreground">Form Builder · {form.name}</span>
       </header>
       <div className="mx-auto max-w-6xl px-4 py-8">
         <Builder formId={form.id} initialSchema={schema} />

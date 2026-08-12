@@ -40,10 +40,10 @@ export default function ShareTabs({
   }
 
   const tabClass = (t: string) =>
-    `rounded-md px-3 py-1.5 text-sm font-medium ${
+    `rounded-brand px-3 py-1.5 text-sm font-medium ${
       tab === t
-        ? "bg-blue-600 text-white"
-        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+        ? "bg-primary text-white"
+        : "bg-muted text-muted-foreground hover:bg-line"
     }`;
 
   return (
@@ -65,7 +65,7 @@ export default function ShareTabs({
           <button
             type="button"
             onClick={copy}
-            className="ml-auto rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:border-blue-400"
+            className="ml-auto rounded-brand border border-line px-3 py-1.5 text-sm text-[#3d3a35] hover:border-primary"
           >
             {copied ? "Copied!" : "Copy"}
           </button>
@@ -74,11 +74,11 @@ export default function ShareTabs({
 
       {tab === "link" && (
         <div className="mt-3">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Share this link anywhere — no website needed. We host the form.
           </p>
-          <code className="mt-2 block rounded bg-gray-100 px-3 py-2 text-sm break-all">
-            <a href={hostedUrl} target="_blank" className="text-blue-600 hover:underline">
+          <code className="mt-2 block rounded bg-muted px-3 py-2 text-sm break-all">
+            <a href={hostedUrl} target="_blank" className="text-primary hover:underline">
               {hostedUrl}
             </a>
           </code>
@@ -86,7 +86,7 @@ export default function ShareTabs({
       )}
       {tab === "embed" && (
         <div className="mt-3">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Paste into your site builder&apos;s <strong>Embed</strong> block
             (Squarespace, Webflow, Wix, Carrd, Notion…). Always shows the latest
             version of your form.
@@ -98,7 +98,7 @@ export default function ShareTabs({
       )}
       {tab === "qr" && (
         <div className="mt-3">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Print it on flyers, table tents, posters — scanning opens your form.
             It never goes stale: edits to the form don&apos;t change the QR.
           </p>
@@ -108,7 +108,7 @@ export default function ShareTabs({
               <img
                 src={qrPng}
                 alt="QR code for your form"
-                className="h-40 w-40 rounded-md border bg-white"
+                className="h-40 w-40 rounded-brand border bg-white"
               />
             )}
             <div className="space-y-2">
@@ -116,7 +116,7 @@ export default function ShareTabs({
                 <a
                   href={qrPng}
                   download="form-qr.png"
-                  className="block rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-700"
+                  className="block rounded-brand bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-primary-dark"
                 >
                   Download PNG
                 </a>
@@ -124,7 +124,7 @@ export default function ShareTabs({
               <button
                 type="button"
                 onClick={downloadSvg}
-                className="block w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:border-blue-400"
+                className="block w-full rounded-brand border border-line px-4 py-2 text-sm text-[#3d3a35] hover:border-primary"
               >
                 Download SVG (print-sharp)
               </button>
@@ -134,7 +134,7 @@ export default function ShareTabs({
       )}
       {tab === "code" && (
         <div className="mt-3">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Raw HTML with validation and spam protection built in. Paste into
             your own site and style it with your CSS. Re-copy after editing the
             form — this snapshot doesn&apos;t auto-update (old copies keep
