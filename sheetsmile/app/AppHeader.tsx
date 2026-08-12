@@ -20,8 +20,10 @@ export default function AppHeader({
       <div className="flex items-center gap-6">
         <Link
           href="/dashboard"
-          className="font-semibold tracking-[0.14em] text-foreground"
+          className="flex items-center gap-2 font-semibold tracking-[0.14em] text-foreground"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" className="h-7 w-auto" />
           SheetSmile
         </Link>
         <nav className="flex items-center gap-1">

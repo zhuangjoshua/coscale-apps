@@ -60,7 +60,12 @@ const USE_CASES = [
 function SiteHeader() {
   return (
     <header className="flex items-center justify-between border-b border-line bg-white px-6 py-4">
-      <Link href="/" className="font-semibold tracking-[0.14em] text-foreground">
+      <Link
+        href="/"
+        className="flex items-center gap-2 font-semibold tracking-[0.14em] text-foreground"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="" className="h-7 w-auto" />
         SheetSmile
       </Link>
       <nav className="flex items-center gap-5 text-sm text-[#3d3a35]">
