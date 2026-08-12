@@ -5,7 +5,7 @@ const globalForDb = globalThis as unknown as { _smDb?: Database.Database };
 
 const db =
   globalForDb._smDb ??
-  new Database(path.join(process.cwd(), "sheetmaster.db"));
+  new Database(path.join(process.cwd(), "sheetsmile.db"));
 globalForDb._smDb = db;
 
 db.pragma("busy_timeout = 5000");
