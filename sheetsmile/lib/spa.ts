@@ -60,10 +60,17 @@ export function spaResponse(): Response {
   if (!cached) {
     cached = fs
       .readFileSync(SHELL_PATH, "utf8")
-      // The Takyon shell points at a favicon.svg we don't ship — use the logo,
-      // and match the brand's casing in the tab title.
-      .replaceAll('type="image/svg+xml" href="/favicon.svg"', 'href="/logo.png"')
-      .replaceAll('href="/favicon.svg"', 'href="/logo.png"')
+      // The Takyon shell points at a favicon.svg we don't ship. Swap in the
+      // real icons — Safari needs a genuine .ico and honours explicit tags.
+      .replace(
+        '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />',
+        '<link rel="icon" href="/favicon.ico" sizes="any" />\n    <link rel="icon" type="image/png" sizes="256x256" href="/icon-256.png" />'
+      )
+      .replace(
+        '<link rel="apple-touch-icon" href="/favicon.svg" />',
+        '<link rel="apple-touch-icon" href="/apple-touch-icon.png" />'
+      )
+      .replaceAll('href="/favicon.svg"', 'href="/favicon.ico"')
       .replaceAll("Sheetsmile", "SheetSmile")
       .replace("</body>", `${LINK_FIX_SCRIPT}</body>`);
   }
