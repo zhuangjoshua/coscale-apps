@@ -59,7 +59,9 @@ export default async function Dashboard() {
           method="POST"
           className="mt-10 rounded-brand border bg-white p-6 space-y-4"
         >
-          <h2 className="text-lg font-semibold text-foreground">New form</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            Create a New Form
+          </h2>
           <div>
             <label className="block text-sm font-medium text-[#3d3a35]">
               Form name
