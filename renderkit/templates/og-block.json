@@ -1,0 +1,33 @@
+{
+  "name": "og-block",
+  "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": {
+    "bg": "#0f172a",
+    "accent": "#38bdf8",
+    "text": "#f8fafc",
+    "muted": "#94a3b8",
+    "font": ""
+  },
+  "fields": {
+    "title":  { "type": "text", "label": "Title",  "default": "Your headline goes here" },
+    "author": { "type": "text", "label": "Author", "default": "Josh" },
+    "tag":    { "type": "text", "label": "Tag",    "default": "CHANGELOG" }
+  },
+  "regions": {
+    "top": [
+      { "id": "o1", "type": "badge", "bind": "tag", "style": { "size": 18, "color": "#1e293b" } }
+    ],
+    "middle": [
+      { "id": "o2", "type": "text", "bind": "title", "fit": true,
+        "style": { "size": 64, "weight": 800, "letterSpacing": "-0.03em" } }
+    ],
+    "bottom": [
+      { "id": "o3", "type": "text", "bind": "author", "style": { "size": 24, "color": "muted" } }
+    ],
+    "floating": [
+      { "id": "o4", "type": "text", "value": "renderkit", "style": { "size": 22, "weight": 700, "color": "accent", "x": 88, "y": 90 } }
+    ]
+  }
+}

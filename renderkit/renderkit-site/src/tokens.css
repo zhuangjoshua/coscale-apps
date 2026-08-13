@@ -1,0 +1,33 @@
+/* SCAFFOLD-PLACEHOLDER TOKENS — every product MUST replace these from its
+   design brief before publish. Shipping these exact values is a visible
+   refresh finding. The magenta/lime palette and Comic-Sans-ish font stack
+   below are deliberately ugly so an unthemed product is impossible to miss.
+   This file is the ONLY place look-and-feel lives: components style through
+   the Tailwind theme, which maps 1:1 onto these variables. */
+
+:root {
+  /* Color tokens (deliberately ugly placeholders) */
+  --tk-primary: #F5A524;
+  --tk-primary-foreground: #ffffff;
+  --tk-accent: #F5A524;
+  --tk-accent-foreground: #ffffff;
+  --tk-background: #0E1116;
+  --tk-foreground: #F2F5F8;
+  --tk-muted: #1A2029;
+  --tk-muted-foreground: #9AA5B1;
+  --tk-card: #ffffff;
+  --tk-card-foreground: #F2F5F8;
+  --tk-destructive: #ff2200;
+  --tk-destructive-foreground: #ffffff;
+  --tk-border: #2A3340;
+  --tk-input: #2A3340;
+  --tk-ring: #F5A524;
+
+  /* Typography tokens (deliberately Comic-Sans-ish placeholders) */
+  --tk-font-sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --tk-font-heading: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --tk-font-mono: "Courier New", monospace;
+
+  /* Shape tokens */
+  --tk-radius: 10px;
+}

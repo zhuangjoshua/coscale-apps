@@ -1,0 +1,40 @@
+{
+  "name": "certificate-block",
+  "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": {
+    "bg": "#fffdf7",
+    "accent": "#b08d2f",
+    "text": "#2a2417",
+    "muted": "#6b6353",
+    "font": "Georgia"
+  },
+  "fields": {
+    "name":   { "type": "text", "label": "Recipient", "default": "Alexandra Konstantinopoulos" },
+    "course": { "type": "text", "label": "Course",    "default": "Advanced TypeScript Architecture" },
+    "date":   { "type": "text", "label": "Date",      "default": "August 13, 2026" },
+    "signer": { "type": "text", "label": "Signer",    "default": "J. Zhuang, Lead Instructor" }
+  },
+  "regions": {
+    "top": [
+      { "id": "c1", "type": "text", "value": "CERTIFICATE OF COMPLETION",
+        "style": { "size": 16, "color": "accent", "align": "center", "letterSpacing": "0.35em", "marginBottom": 24 } },
+      { "id": "c2", "type": "text", "value": "This certifies that",
+        "style": { "size": 20, "color": "muted", "align": "center" } }
+    ],
+    "middle": [
+      { "id": "c3", "type": "text", "bind": "name", "fit": true,
+        "style": { "size": 58, "weight": 700, "align": "center", "italic": true, "marginBottom": 10 } },
+      { "id": "c4", "type": "divider", "style": { "color": "accent", "marginBottom": 18 } },
+      { "id": "c5", "type": "text", "value": "has successfully completed",
+        "style": { "size": 20, "color": "muted", "align": "center", "marginBottom": 8 } },
+      { "id": "c6", "type": "text", "bind": "course",
+        "style": { "size": 30, "weight": 700, "align": "center" } }
+    ],
+    "bottom": [
+      { "id": "c7", "type": "text", "bind": "date", "style": { "size": 16, "color": "muted", "align": "center" } },
+      { "id": "c8", "type": "text", "bind": "signer", "style": { "size": 16, "color": "muted", "align": "center" } }
+    ]
+  }
+}

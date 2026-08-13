@@ -1,0 +1,96 @@
+{
+  "name": "quote-block",
+  "kind": "block",
+  "canvas": {
+    "width": 1200,
+    "height": 630
+  },
+  "preset": "stacked",
+  "theme": {
+    "bg": "#101418",
+    "accent": "#4da3ff",
+    "text": "#eef2f7",
+    "muted": "#8b93a5",
+    "font": "Inter"
+  },
+  "fields": {
+    "quote": {
+      "type": "text",
+      "label": "Quote",
+      "default": "We replaced four hours of manual banner work a week with one API call."
+    },
+    "author": {
+      "type": "text",
+      "label": "Author",
+      "default": "Sam Ortiz"
+    },
+    "role": {
+      "type": "text",
+      "label": "Role",
+      "default": "Head of Growth, Nightjar"
+    },
+    "stars": {
+      "type": "number",
+      "label": "Stars",
+      "default": 5
+    }
+  },
+  "regions": {
+    "top": [
+      {
+        "id": "b1",
+        "type": "text",
+        "value": "“",
+        "style": {
+          "size": 120,
+          "color": "accent",
+          "weight": 400
+        }
+      }
+    ],
+    "middle": [
+      {
+        "id": "b2",
+        "type": "text",
+        "bind": "quote",
+        "fit": true,
+        "style": {
+          "size": 44,
+          "weight": 600,
+          "letterSpacing": "-0.01em"
+        }
+      }
+    ],
+    "bottom": [
+      {
+        "id": "b4",
+        "type": "text",
+        "bind": "author",
+        "style": {
+          "size": 24,
+          "weight": 700,
+          "color": "accent"
+        }
+      },
+      {
+        "id": "b5",
+        "type": "text",
+        "bind": "role",
+        "style": {
+          "size": 19,
+          "color": "muted",
+          "marginBottom": 0
+        }
+      },
+      {
+        "id": "b3",
+        "type": "stars",
+        "bind": "stars",
+        "style": {
+          "size": 28,
+          "marginBottom": 14
+        }
+      }
+    ]
+  }
+}

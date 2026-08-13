@@ -1,0 +1,39 @@
+{
+  "name": "receipt-block",
+  "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": {
+    "bg": "#f6f4ef",
+    "accent": "#c8442c",
+    "text": "#1a1a1a",
+    "muted": "#6b6353",
+    "font": ""
+  },
+  "fields": {
+    "company":  { "type": "text",   "label": "Company",  "default": "ACME SUPPLY CO." },
+    "customer": { "type": "text",   "label": "Customer", "default": "John Appleseed" },
+    "items":    { "type": "list",   "label": "Items",    "default": [
+      { "name": "Espresso Machine", "price": "$429.00" },
+      { "name": "Grinder", "price": "$189.00" }
+    ] },
+    "total":    { "type": "text",   "label": "Total",    "default": "$630.50" },
+    "badge":    { "type": "text",   "label": "Badge",    "default": "−15% applied" }
+  },
+  "regions": {
+    "top": [
+      { "id": "r1", "type": "badge", "bind": "badge", "style": { "size": 20, "color": "accent", "align": "right", "marginBottom": 8 } },
+      { "id": "r2", "type": "text", "bind": "company", "style": { "size": 34, "weight": 700, "letterSpacing": "-0.02em" } },
+      { "id": "r3", "type": "text", "bind": "customer", "style": { "size": 18, "color": "muted", "marginBottom": 24 } },
+      { "id": "r4", "type": "divider", "style": { "color": "text" } }
+    ],
+    "middle": [
+      { "id": "r5", "type": "list", "bind": "items", "listColumns": { "labelKey": "name", "valueKey": "price" },
+        "style": { "size": 22 } }
+    ],
+    "bottom": [
+      { "id": "r6", "type": "divider", "style": { "color": "text", "marginBottom": 16 } },
+      { "id": "r7", "type": "text", "bind": "total", "style": { "size": 30, "weight": 700, "align": "right" } }
+    ]
+  }
+}

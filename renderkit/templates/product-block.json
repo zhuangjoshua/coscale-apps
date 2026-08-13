@@ -1,0 +1,37 @@
+{
+  "name": "product-block",
+  "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "split-right",
+  "theme": {
+    "bg": "#0f0f10",
+    "accent": "#4da3ff",
+    "text": "#ffffff",
+    "muted": "#8b93a5",
+    "font": ""
+  },
+  "media": { "bind": "image" },
+  "fields": {
+    "product": { "type": "text",  "label": "Product",  "default": "Aeron Task Chair" },
+    "price":   { "type": "text",  "label": "Price",    "default": "$1,195" },
+    "was":     { "type": "text",  "label": "Was",      "default": "$1,395" },
+    "image":   { "type": "image", "label": "Photo",    "default": "https://picsum.photos/seed/chair/800/800" },
+    "cta":     { "type": "text",  "label": "CTA line", "default": "Free shipping this week" }
+  },
+  "regions": {
+    "top": [
+      { "id": "p1", "type": "badge", "value": "SALE", "style": { "size": 18, "color": "#e5484d" } }
+    ],
+    "middle": [
+      { "id": "p2", "type": "text", "bind": "product", "fit": true,
+        "style": { "size": 54, "weight": 800, "letterSpacing": "-0.02em", "marginBottom": 16 } },
+      { "id": "p3", "type": "text", "bind": "price",
+        "style": { "size": 46, "weight": 800, "color": "accent" } },
+      { "id": "p4", "type": "text", "bind": "was",
+        "style": { "size": 24, "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "p5", "type": "text", "bind": "cta", "style": { "size": 20, "color": "muted" } }
+    ]
+  }
+}
