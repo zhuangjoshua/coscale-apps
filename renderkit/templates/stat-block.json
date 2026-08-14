@@ -1,0 +1,26 @@
+{
+  "name": "stat-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": { "bg": "#062e26", "accent": "#34d399", "text": "#ecfdf5", "muted": "#8fbdb0", "font": "" },
+  "fields": {
+    "metric": { "type": "text", "label": "Metric",   "default": "$1.24M" },
+    "label":  { "type": "text", "label": "Label",    "default": "Annual recurring revenue" },
+    "delta":  { "type": "text", "label": "Delta",    "default": "▲ 31% vs last quarter" },
+    "period": { "type": "text", "label": "Period",   "default": "Q3 2026 INVESTOR UPDATE" },
+    "brand":  { "type": "text", "label": "Brand",    "default": "northwind.io" }
+  },
+  "regions": {
+    "top": [
+      { "id": "m1", "type": "text", "bind": "period", "style": { "size": 16, "color": "muted", "letterSpacing": "0.25em" } }
+    ],
+    "middle": [
+      { "id": "m2", "type": "text", "bind": "metric", "fit": true, "style": { "size": 150, "weight": 800, "letterSpacing": "-0.04em", "color": "accent" } },
+      { "id": "m3", "type": "text", "bind": "label", "style": { "size": 28, "marginBottom": 12 } },
+      { "id": "m4", "type": "badge", "bind": "delta", "style": { "size": 18, "color": "#0b4f41" } }
+    ],
+    "bottom": [
+      { "id": "m5", "type": "text", "bind": "brand", "style": { "size": 18, "weight": 700, "color": "muted", "align": "right" } }
+    ]
+  }
+}

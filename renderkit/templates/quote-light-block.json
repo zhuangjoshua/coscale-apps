@@ -1,0 +1,25 @@
+{
+  "name": "quote-light-block", "kind": "block",
+  "canvas": { "width": 1080, "height": 1080 },
+  "preset": "stacked",
+  "theme": { "bg": "#faf7f2", "accent": "#c2410c", "text": "#292524", "muted": "#78716c", "font": "Georgia" },
+  "fields": {
+    "quote":  { "type": "text",   "label": "Quote",  "default": "I stopped dreading launch days. The assets just… exist now." },
+    "author": { "type": "text",   "label": "Author", "default": "Priya Raman" },
+    "role":   { "type": "text",   "label": "Role",   "default": "Founder, Lumen Labs" },
+    "stars":  { "type": "number", "label": "Stars",  "default": 5 }
+  },
+  "regions": {
+    "top": [
+      { "id": "q1", "type": "text", "value": "“", "style": { "size": 160, "color": "accent", "weight": 400 } }
+    ],
+    "middle": [
+      { "id": "q2", "type": "text", "bind": "quote", "fit": true, "style": { "size": 52, "weight": 400, "italic": true, "letterSpacing": "-0.01em" } }
+    ],
+    "bottom": [
+      { "id": "q3", "type": "stars", "bind": "stars", "style": { "size": 26, "marginBottom": 12 } },
+      { "id": "q4", "type": "text", "bind": "author", "style": { "size": 26, "weight": 700 } },
+      { "id": "q5", "type": "text", "bind": "role", "style": { "size": 20, "color": "muted" } }
+    ]
+  }
+}

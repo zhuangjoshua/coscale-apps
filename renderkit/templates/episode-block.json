@@ -1,0 +1,28 @@
+{
+  "name": "episode-block", "kind": "block",
+  "canvas": { "width": 1080, "height": 1080 },
+  "preset": "background",
+  "theme": { "bg": "#180d05", "accent": "#f97316", "text": "#fff7ed", "muted": "#d8b89a", "font": "" },
+  "media": { "bind": "art" },
+  "fields": {
+    "show":  { "type": "text",  "label": "Show",    "default": "THE BUILD LOG" },
+    "ep":    { "type": "text",  "label": "Episode", "default": "EP. 47" },
+    "title": { "type": "text",  "label": "Title",   "default": "Why we killed our best feature" },
+    "guest": { "type": "text",  "label": "Guest",   "default": "with Dana Okafor, CTO @ Driftwell" },
+    "art":   { "type": "image", "label": "Art",     "default": "https://picsum.photos/seed/studio/1100/1100" }
+  },
+  "regions": {
+    "top": [
+      { "id": "e1", "type": "text", "bind": "show", "style": { "size": 24, "weight": 700, "letterSpacing": "0.3em", "color": "accent" } }
+    ],
+    "middle": [
+      { "id": "e2", "type": "text", "bind": "title", "fit": true, "style": { "size": 76, "weight": 800, "letterSpacing": "-0.02em" } }
+    ],
+    "bottom": [
+      { "id": "e3", "type": "text", "bind": "guest", "style": { "size": 26, "color": "muted" } }
+    ],
+    "floating": [
+      { "id": "e4", "type": "badge", "bind": "ep", "style": { "size": 22, "color": "accent", "x": 95, "y": 4 } }
+    ]
+  }
+}

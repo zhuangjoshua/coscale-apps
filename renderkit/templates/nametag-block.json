@@ -1,0 +1,25 @@
+{
+  "name": "nametag-block", "kind": "block",
+  "canvas": { "width": 1080, "height": 1080 },
+  "preset": "stacked",
+  "theme": { "bg": "#0f172a", "accent": "#f43f5e", "text": "#f8fafc", "muted": "#94a3b8", "font": "" },
+  "fields": {
+    "event":   { "type": "text", "label": "Event",   "default": "DEVCON PORTLAND 2026" },
+    "name":    { "type": "text", "label": "Name",    "default": "Sam Whitaker" },
+    "role":    { "type": "text", "label": "Role",    "default": "Staff Engineer · Fernwood" },
+    "track":   { "type": "text", "label": "Track",   "default": "SPEAKER" }
+  },
+  "regions": {
+    "top": [
+      { "id": "n1", "type": "text", "bind": "event", "style": { "size": 26, "letterSpacing": "0.2em", "color": "muted", "align": "center" } }
+    ],
+    "middle": [
+      { "id": "n2", "type": "text", "bind": "name", "fit": true, "style": { "size": 110, "weight": 800, "align": "center", "letterSpacing": "-0.03em", "marginBottom": 10 } },
+      { "id": "n3", "type": "text", "bind": "role", "style": { "size": 30, "align": "center", "color": "muted" } }
+    ],
+    "bottom": [],
+    "floating": [
+      { "id": "n4", "type": "badge", "bind": "track", "style": { "size": 24, "color": "accent", "x": 50, "y": 88 } }
+    ]
+  }
+}

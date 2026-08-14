@@ -1,0 +1,27 @@
+{
+  "name": "sale-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "background",
+  "theme": { "bg": "#0a0a0a", "accent": "#ef4444", "text": "#ffffff", "muted": "#d4d4d4", "font": "" },
+  "media": { "bind": "image" },
+  "fields": {
+    "off":    { "type": "text",  "label": "Discount", "default": "40% OFF" },
+    "line":   { "type": "text",  "label": "Line",     "default": "Everything must go — end of season" },
+    "code":   { "type": "text",  "label": "Code",     "default": "USE CODE: FALL40" },
+    "ends":   { "type": "text",  "label": "Ends",     "default": "ENDS SUNDAY" },
+    "image":  { "type": "image", "label": "Photo",    "default": "https://picsum.photos/seed/shop/1400/800" }
+  },
+  "regions": {
+    "top": [],
+    "middle": [
+      { "id": "s1", "type": "text", "bind": "off", "fit": true, "style": { "size": 130, "weight": 800, "align": "center", "letterSpacing": "-0.04em" } },
+      { "id": "s2", "type": "text", "bind": "line", "style": { "size": 26, "align": "center", "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "s3", "type": "badge", "bind": "code", "style": { "size": 20, "color": "accent", "align": "center" } }
+    ],
+    "floating": [
+      { "id": "s4", "type": "badge", "bind": "ends", "style": { "size": 15, "color": "#111111", "x": 96, "y": 6 } }
+    ]
+  }
+}

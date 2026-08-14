@@ -1,0 +1,29 @@
+{
+  "name": "menu-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "split-right",
+  "theme": { "bg": "#fefce8", "accent": "#a16207", "text": "#1c1917", "muted": "#78716c", "font": "Georgia" },
+  "media": { "bind": "photo" },
+  "fields": {
+    "heading": { "type": "text",  "label": "Heading",  "default": "Today's Specials" },
+    "sub":     { "type": "text",  "label": "Subtitle", "default": "Fresh from the kitchen · served till 9pm" },
+    "items":   { "type": "list",  "label": "Items",    "default": [
+      { "name": "Braised short rib, polenta", "price": "$24" },
+      { "name": "Charred corn agnolotti", "price": "$19" },
+      { "name": "Halibut, brown butter caper", "price": "$28" },
+      { "name": "Basque cheesecake", "price": "$11" }
+    ] },
+    "photo":   { "type": "image", "label": "Photo",    "default": "https://picsum.photos/seed/kitchen/800/900" }
+  },
+  "regions": {
+    "top": [
+      { "id": "u1", "type": "text", "bind": "heading", "style": { "size": 44, "weight": 700, "italic": true, "marginBottom": 4 } },
+      { "id": "u2", "type": "text", "bind": "sub", "style": { "size": 17, "color": "muted", "marginBottom": 14 } },
+      { "id": "u3", "type": "divider", "style": { "color": "accent" } }
+    ],
+    "middle": [
+      { "id": "u4", "type": "list", "bind": "items", "listColumns": { "labelKey": "name", "valueKey": "price" }, "style": { "size": 21 } }
+    ],
+    "bottom": []
+  }
+}

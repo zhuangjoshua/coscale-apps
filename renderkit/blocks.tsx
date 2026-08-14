@@ -13,8 +13,10 @@ export type BlockStyle = {
   italic?: boolean;
   offsetX?: number;       // visual nudge px (transform) — does not affect flow
   offsetY?: number;
-  x?: number;             // floating blocks only: position as % of canvas (anchor = block center)
+  x?: number;             // floating blocks only: position as % of canvas (sliding anchor)
   y?: number;
+  w?: number;             // floating blocks only: explicit box width in px (text wraps inside);
+                          // absent = size to content
 };
 
 export type Block = {
@@ -86,12 +88,13 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
     fontFamily: t.font ? `'${t.font}', -apple-system, sans-serif` : undefined,
   };
   const v = blockValue(b, doc, data);
+  const tag = { "data-bid": b.id, "data-btype": b.type } as any;
 
   switch (b.type) {
     case "text": {
       const fitProps = b.fit ? { "data-fit": "", "data-fit-min": "12" } : {};
       return (
-        <div key={b.id} {...fitProps} style={{
+        <div key={b.id} {...tag} {...fitProps} style={{
           ...base,
           lineHeight: 1.25,
           ...(b.fit ? { maxHeight: "100%", overflow: "hidden" } : {}),
@@ -101,7 +104,7 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
     case "image": {
       if (!v) return null;
       return (
-        <div key={b.id} style={{ marginBottom: base.marginBottom, display: "flex",
+        <div key={b.id} {...tag} style={{ marginBottom: base.marginBottom, display: "flex",
           justifyContent: st.align === "center" ? "center" : st.align === "right" ? "flex-end" : "flex-start" }}>
           <img src={String(v)} style={{
             width: st.size ? st.size * 4 : 200, height: st.size ? st.size * 4 : 200,
@@ -114,7 +117,7 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
       const n = Math.max(0, Math.min(5, Number(v ?? 0)));
       if (!n) return null;
       return (
-        <div key={b.id} style={{ ...base, color: resolveColor(st.color, t, "#f5b83d"),
+        <div key={b.id} {...tag} style={{ ...base, color: resolveColor(st.color, t, "#f5b83d"),
           letterSpacing: st.letterSpacing ?? "0.1em" }}>
           {"★".repeat(n)}
         </div>
@@ -123,7 +126,7 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
     case "badge": {
       if (!v) return null;
       return (
-        <div key={b.id} style={{ marginBottom: base.marginBottom, display: "flex",
+        <div key={b.id} {...tag} style={{ marginBottom: base.marginBottom, display: "flex",
           justifyContent: st.align === "center" ? "center" : st.align === "right" ? "flex-end" : "flex-start" }}>
           <div style={{
             background: resolveColor(st.color, t, t.accent), color: "#fff",
@@ -135,15 +138,15 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
       );
     }
     case "divider":
-      return <div key={b.id} style={{ borderTop: `2px solid ${resolveColor(st.color, t, t.muted)}`,
+      return <div key={b.id} {...tag} style={{ borderTop: `2px solid ${resolveColor(st.color, t, t.muted)}`,
         opacity: 0.5, marginBottom: base.marginBottom, width: "100%" }} />;
     case "spacer":
-      return <div key={b.id} style={{ height: st.size ?? 24 }} />;
+      return <div key={b.id} {...tag} style={{ height: st.size ?? 24 }} />;
     case "list": {
       const items: any[] = Array.isArray(v) ? v : [];
       const cols = b.listColumns ?? { labelKey: "name", valueKey: "price" };
       return (
-        <div key={b.id} style={{ marginBottom: base.marginBottom, width: "100%" }}>
+        <div key={b.id} {...tag} style={{ marginBottom: base.marginBottom, width: "100%" }}>
           {items.map((it, i) => (
             <div key={i} style={{
               display: "flex", justifyContent: "space-between", width: "100%",
@@ -164,9 +167,9 @@ function renderBlockInner(b: Block, doc: BlockDoc, data: Record<string, any>): R
   }
 }
 
-function regionEl(blocks: Block[], doc: BlockDoc, data: Record<string, any>, grow = false): React.ReactNode {
+function regionEl(name: string, blocks: Block[], doc: BlockDoc, data: Record<string, any>, grow = false): React.ReactNode {
   return (
-    <div style={{ display: "flex", flexDirection: "column", ...(grow ? { flex: 1, minHeight: 0 } : {}) }}>
+    <div data-region={name} style={{ display: "flex", flexDirection: "column", ...(grow ? { flex: 1, minHeight: 0 } : {}) }}>
       {blocks.map((b) => renderBlock(b, doc, data))}
     </div>
   );
@@ -183,9 +186,9 @@ export function renderBlockTemplate(doc: BlockDoc, data: Record<string, any>): R
   const columns = (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between",
       flex: 1, minWidth: 0, minHeight: 0 }}>
-      {regionEl(doc.regions.top ?? [], doc, data)}
-      {regionEl(doc.regions.middle ?? [], doc, data, true)}
-      {regionEl(doc.regions.bottom ?? [], doc, data)}
+      {regionEl("top", doc.regions.top ?? [], doc, data)}
+      {regionEl("middle", doc.regions.middle ?? [], doc, data, true)}
+      {regionEl("bottom", doc.regions.bottom ?? [], doc, data)}
     </div>
   );
 
@@ -202,9 +205,13 @@ export function renderBlockTemplate(doc: BlockDoc, data: Record<string, any>): R
     // sliding anchor: 0 => left/top edge flush, 50 => centered, 100 => right/bottom edge flush.
     // The block therefore always sits fully inside the canvas across the whole 0-100 range.
     return (
-      <div key={`float-${b.id}`} style={{
+      <div key={`float-${b.id}`} data-bid={b.id} data-float="1" style={{
         position: "absolute", left: `${x}%`, top: `${y}%`,
-        transform: `translate(-${x}%, -${y}%)`, maxWidth: "92%", zIndex: 10,
+        transform: `translate(-${x}%, -${y}%)`, zIndex: 10,
+        // explicit box width when set (text wraps inside); otherwise size to
+        // content — never to the space left of the anchor, which collapsed
+        // right-edge text into one-word-per-line stacking
+        width: b.style?.w ? b.style.w : "max-content", maxWidth: "92%",
       }}>{renderBlock(b, doc, data)}</div>
     );
   });

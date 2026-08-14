@@ -1,0 +1,28 @@
+{
+  "name": "webinar-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "split-left",
+  "theme": { "bg": "#082f49", "accent": "#38bdf8", "text": "#f0f9ff", "muted": "#94c6e0", "font": "" },
+  "media": { "bind": "speaker_photo" },
+  "fields": {
+    "kicker":        { "type": "text",  "label": "Kicker",   "default": "FREE LIVE WEBINAR" },
+    "title":         { "type": "text",  "label": "Title",    "default": "Pricing your SaaS in a downturn" },
+    "when":          { "type": "text",  "label": "When",     "default": "Thu Nov 5 · 10 AM PT · 45 min + Q&A" },
+    "speaker":       { "type": "text",  "label": "Speaker",  "default": "Alex Osei — 3x founder, pricing advisor to 40+ SaaS teams" },
+    "cta":           { "type": "text",  "label": "CTA",      "default": "Save your seat → northwind.io/live" },
+    "speaker_photo": { "type": "image", "label": "Photo",    "default": "https://picsum.photos/seed/speaker/800/900" }
+  },
+  "regions": {
+    "top": [
+      { "id": "w1", "type": "badge", "bind": "kicker", "style": { "size": 15, "color": "accent" } }
+    ],
+    "middle": [
+      { "id": "w2", "type": "text", "bind": "title", "fit": true, "style": { "size": 52, "weight": 800, "letterSpacing": "-0.02em", "marginBottom": 12 } },
+      { "id": "w3", "type": "text", "bind": "when", "style": { "size": 22, "color": "accent", "weight": 600 } },
+      { "id": "w4", "type": "text", "bind": "speaker", "style": { "size": 18, "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "w5", "type": "text", "bind": "cta", "style": { "size": 22, "weight": 700 } }
+    ]
+  }
+}

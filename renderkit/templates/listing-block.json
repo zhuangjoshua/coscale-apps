@@ -1,0 +1,28 @@
+{
+  "name": "listing-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "background",
+  "theme": { "bg": "#101613", "accent": "#22c55e", "text": "#ffffff", "muted": "#cbd5d1", "font": "" },
+  "media": { "bind": "photo" },
+  "fields": {
+    "price":   { "type": "text",  "label": "Price",   "default": "$742,000" },
+    "address": { "type": "text",  "label": "Address", "default": "418 Alder Grove Ln, Portland OR" },
+    "specs":   { "type": "text",  "label": "Specs",   "default": "4 bd · 3 ba · 2,340 sqft · built 2019" },
+    "status":  { "type": "text",  "label": "Status",  "default": "OPEN SUN 1–4" },
+    "agent":   { "type": "text",  "label": "Agent",   "default": "Lena Park · Alder Realty" },
+    "photo":   { "type": "image", "label": "Photo",   "default": "https://picsum.photos/seed/house/1400/800" }
+  },
+  "regions": {
+    "top": [],
+    "middle": [],
+    "bottom": [
+      { "id": "l1", "type": "text", "bind": "price", "style": { "size": 56, "weight": 800, "letterSpacing": "-0.02em" } },
+      { "id": "l2", "type": "text", "bind": "address", "style": { "size": 24, "marginBottom": 4 } },
+      { "id": "l3", "type": "text", "bind": "specs", "style": { "size": 18, "color": "muted" } },
+      { "id": "l4", "type": "text", "bind": "agent", "style": { "size": 15, "color": "muted", "marginBottom": 0 } }
+    ],
+    "floating": [
+      { "id": "l5", "type": "badge", "bind": "status", "style": { "size": 17, "color": "accent", "x": 4, "y": 6 } }
+    ]
+  }
+}

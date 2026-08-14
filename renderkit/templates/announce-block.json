@@ -1,0 +1,25 @@
+{
+  "name": "announce-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": { "bg": "#1e1b4b", "accent": "#818cf8", "text": "#eef2ff", "muted": "#a5b4fc", "font": "" },
+  "fields": {
+    "kicker": { "type": "text", "label": "Kicker",  "default": "WE'RE HIRING" },
+    "title":  { "type": "text", "label": "Title",   "default": "Senior Product Engineer" },
+    "detail": { "type": "text", "label": "Detail",  "default": "Remote (US/EU) · $170–210k · Equity" },
+    "cta":    { "type": "text", "label": "CTA",     "default": "Apply at northwind.io/careers" }
+  },
+  "regions": {
+    "top": [
+      { "id": "a1", "type": "badge", "bind": "kicker", "style": { "size": 17, "color": "accent" } }
+    ],
+    "middle": [
+      { "id": "a2", "type": "text", "bind": "title", "fit": true, "style": { "size": 72, "weight": 800, "letterSpacing": "-0.03em", "marginBottom": 12 } },
+      { "id": "a3", "type": "text", "bind": "detail", "style": { "size": 26, "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "a4", "type": "divider", "style": { "color": "muted", "marginBottom": 14 } },
+      { "id": "a5", "type": "text", "bind": "cta", "style": { "size": 22, "weight": 700 } }
+    ]
+  }
+}

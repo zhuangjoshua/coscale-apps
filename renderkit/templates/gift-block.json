@@ -1,0 +1,27 @@
+{
+  "name": "gift-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": { "bg": "#1c1917", "accent": "#eab308", "text": "#fafaf9", "muted": "#a8a29e", "font": "" },
+  "fields": {
+    "amount": { "type": "text", "label": "Amount",  "default": "$100" },
+    "store":  { "type": "text", "label": "Store",   "default": "GOLDLEAF COFFEE ROASTERS" },
+    "to":     { "type": "text", "label": "To",      "default": "For: Jamie · From: The Nguyens" },
+    "code":   { "type": "text", "label": "Code",    "default": "GL-8F2K-P0XN-33QD" },
+    "note":   { "type": "text", "label": "Note",    "default": "Redeem in store or at goldleaf.shop" }
+  },
+  "regions": {
+    "top": [
+      { "id": "g1", "type": "text", "bind": "store", "style": { "size": 20, "letterSpacing": "0.28em", "color": "muted", "align": "center" } }
+    ],
+    "middle": [
+      { "id": "g2", "type": "text", "value": "GIFT CARD", "style": { "size": 22, "color": "accent", "align": "center", "letterSpacing": "0.35em", "marginBottom": 6 } },
+      { "id": "g3", "type": "text", "bind": "amount", "fit": true, "style": { "size": 140, "weight": 800, "align": "center", "letterSpacing": "-0.03em" } },
+      { "id": "g4", "type": "text", "bind": "to", "style": { "size": 22, "align": "center", "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "g5", "type": "badge", "bind": "code", "style": { "size": 19, "color": "#292524", "align": "center", "marginBottom": 8 } },
+      { "id": "g6", "type": "text", "bind": "note", "style": { "size": 15, "align": "center", "color": "muted" } }
+    ]
+  }
+}

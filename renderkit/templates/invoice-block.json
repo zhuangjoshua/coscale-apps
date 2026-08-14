@@ -1,0 +1,32 @@
+{
+  "name": "invoice-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "stacked",
+  "theme": { "bg": "#ffffff", "accent": "#1d4ed8", "text": "#111827", "muted": "#6b7280", "font": "" },
+  "fields": {
+    "company":  { "type": "text", "label": "Company",   "default": "NORTHWIND CONSULTING LLC" },
+    "invoice":  { "type": "text", "label": "Invoice #", "default": "INVOICE #2026-0847" },
+    "client":   { "type": "text", "label": "Client",    "default": "Billed to: Acme Corp · Net 30 · Due Sep 12, 2026" },
+    "items":    { "type": "list", "label": "Line items", "default": [
+      { "name": "Strategy engagement — August", "price": "$6,400.00" },
+      { "name": "Implementation support (16 hrs)", "price": "$2,880.00" },
+      { "name": "Travel & expenses", "price": "$412.90" }
+    ] },
+    "total":    { "type": "text", "label": "Total",     "default": "$9,692.90" }
+  },
+  "regions": {
+    "top": [
+      { "id": "i1", "type": "badge", "bind": "invoice", "style": { "size": 15, "color": "accent", "align": "right", "marginBottom": 6 } },
+      { "id": "i2", "type": "text", "bind": "company", "style": { "size": 30, "weight": 800, "letterSpacing": "0.02em" } },
+      { "id": "i3", "type": "text", "bind": "client", "style": { "size": 16, "color": "muted", "marginBottom": 18 } },
+      { "id": "i4", "type": "divider", "style": { "color": "text" } }
+    ],
+    "middle": [
+      { "id": "i5", "type": "list", "bind": "items", "listColumns": { "labelKey": "name", "valueKey": "price" }, "style": { "size": 20 } }
+    ],
+    "bottom": [
+      { "id": "i6", "type": "divider", "style": { "color": "text", "marginBottom": 12 } },
+      { "id": "i7", "type": "text", "bind": "total", "style": { "size": 32, "weight": 800, "align": "right", "color": "accent" } }
+    ]
+  }
+}

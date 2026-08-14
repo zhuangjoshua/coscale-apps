@@ -1,0 +1,29 @@
+{
+  "name": "ticket-block", "kind": "block",
+  "canvas": { "width": 1200, "height": 630 },
+  "preset": "split-right",
+  "theme": { "bg": "#12071f", "accent": "#a855f7", "text": "#f5f0ff", "muted": "#9b8cb8", "font": "" },
+  "media": { "bind": "image" },
+  "fields": {
+    "event":   { "type": "text",  "label": "Event",    "default": "Midnight Synthwave Live" },
+    "name":    { "type": "text",  "label": "Attendee", "default": "Maria Chen" },
+    "date":    { "type": "text",  "label": "Date",     "default": "SAT · OCT 24 · 9PM" },
+    "venue":   { "type": "text",  "label": "Venue",    "default": "The Observatory, LA" },
+    "seat":    { "type": "text",  "label": "Seat",     "default": "GA · TICKET #04211" },
+    "image":   { "type": "image", "label": "Photo",    "default": "https://picsum.photos/seed/concert/800/800" }
+  },
+  "regions": {
+    "top": [
+      { "id": "t1", "type": "badge", "bind": "date", "style": { "size": 16, "color": "accent" } }
+    ],
+    "middle": [
+      { "id": "t2", "type": "text", "bind": "event", "fit": true, "style": { "size": 54, "weight": 800, "letterSpacing": "-0.02em", "marginBottom": 10 } },
+      { "id": "t3", "type": "text", "bind": "venue", "style": { "size": 20, "color": "muted" } }
+    ],
+    "bottom": [
+      { "id": "t4", "type": "divider", "style": { "color": "muted", "marginBottom": 14 } },
+      { "id": "t5", "type": "text", "bind": "name", "style": { "size": 26, "weight": 700 } },
+      { "id": "t6", "type": "text", "bind": "seat", "style": { "size": 16, "color": "muted", "letterSpacing": "0.12em" } }
+    ]
+  }
+}
