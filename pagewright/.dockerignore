@@ -1,0 +1,6 @@
+node_modules
+pagewright-site/node_modules
+pagewright-site/dist
+storage
+*.log
+.git

@@ -1,0 +1,231 @@
+/* CODE-EMITTED HERO SKELETON — positions measured from the concept; do not alter
+   subhead zone background is LIGHT -> needs very dark ink;
+   geometry. Set --page-bg/--ink/--ink-soft/--accent/--accent-ink from the brief + photo;
+   --page-bg is the ONE shared document surface: body, solid scrolled nav, footer,
+   and every section use it by default;
+   --accent must be a CONFIDENT saturated tone from the scene (deep ink-blue) — never grey
+   or a washed neutral, which reads as a disabled button. */
+:root { --page-bg: #ffffff; --ink: #1B2733; --ink-soft: #5B6672; --accent: #1D4ED8; --accent-ink: #ffffff; --nav-on-hero: var(--ink, #111111); --nav-on-hero-soft: var(--ink-soft, var(--ink, #111111)); --nav-on-page: var(--ink, #111111); }
+html, body { margin: 0; padding: 0; background: var(--page-bg); }
+main { background: var(--page-bg); }
+section[data-intent] { background-color: var(--page-bg); box-sizing: border-box; }
+section[data-intent] .section-frame { width: min(84%, 1200px); margin-inline: auto; }
+/* TAKYON:CARD-CONTENT-GUTTERS:v1 — code-owned balanced inner card spacing */
+.card-surface { box-sizing: border-box; }
+/* TAKYON:CARD-SURFACE:v1 — code-owned visible card boundary */
+.card-surface { background: color-mix(in srgb, var(--ink) 3%, var(--page-bg)); border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); border-radius: clamp(1rem, 1.6vw, 1.5rem); box-shadow: 0 14px 34px color-mix(in srgb, var(--ink) 8%, transparent); }
+.card-surface .card-content { width: min(100%, 72rem); min-width: 0; box-sizing: border-box; margin-inline: auto; padding-inline: clamp(1.5rem, 4vw, 4rem); padding-block: clamp(0.75rem, 1cqw, 1.1rem); }
+.card-surface > .card-content { transform: none !important; translate: none !important; }
+/* TAKYON:SECTION-RHYTHM:v1 — code-owned equal vertical breathing room */
+section[data-intent]:not([data-intent='close']) { min-height: 50svh; padding-block: clamp(4rem, 7svh, 6.5rem); display: grid; align-items: center; }
+section[data-intent='close'] { min-height: 50svh; display: grid; align-items: center; position: relative; }
+section[data-intent='close']::before { content: ''; position: absolute; top: 0; left: 50%; translate: -50% 0; width: min(84%, 1200px); height: 1px; background: color-mix(in srgb, var(--ink) 14%, transparent); }
+.section-title, .card-title { font-family: system-ui, 'Segoe UI', sans-serif; }
+.section-title { font-weight: 300; font-size: clamp(30px, 3.2cqw, 38.4px); line-height: 1.16; letter-spacing: 0.005em; }
+.card-title { font-weight: 500; letter-spacing: -0.01em; font-size: clamp(1.05rem, 1.35cqw, 1.2rem); line-height: 1.15; }
+section[data-intent] :is(p, li) { font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); line-height: 1.6; }
+section[data-intent='close'] .section-title, section[data-intent='close'] :is(a, button) { font-family: system-ui, 'Segoe UI', sans-serif !important; }
+section[data-intent='close'] .section-title { font-size: clamp(2.4rem, 4.4cqw, 4rem) !important; line-height: 1.04; font-weight: 300; letter-spacing: 0.005em; }
+section[data-intent='close'] :is(a, button) { font-size: clamp(0.78rem, 0.96vw, 0.94rem) !important; }
+[data-card-motion='hover'] .card-surface { transition: translate 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms ease, filter 220ms ease; will-change: translate; }
+@media (hover: hover) and (pointer: fine) { [data-card-motion='hover'] .card-surface:hover { translate: 0 -5px; box-shadow: 0 24px 52px rgba(20, 16, 12, 0.22); filter: brightness(1.025); } }
+@media (prefers-reduced-motion: reduce) { [data-card-motion='hover'] .card-surface { transition: none; } [data-card-motion='hover'] .card-surface:hover { translate: none; } }
+/* TAKYON:AMBIENT-BASE:v1 — code-owned ambient ornament rails */
+[data-ornament] { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { [data-ornament] { animation: none !important; } }
+/* TAKYON:PROOF-PANEL:v1 — code-owned social-proof panel surfaces */
+section[data-intent='social-proof'] .proof-panel { background: var(--page-bg) !important; padding-block: clamp(1.5rem, 2.5cqw, 2.5rem) !important; }
+section[data-intent='social-proof'] .proof-panel .review-cards > * { background: color-mix(in srgb, var(--ink) 4%, #ffffff) !important; }
+section[data-intent='social-proof'] .proof-panel > .card-content { padding-block: 0 !important; padding-inline: clamp(1.25rem, 2.5cqw, 2.5rem) !important; }
+/* TAKYON:SPLIT-CENTER:v1 — code-owned split ensemble centering */
+section[data-composition='split-left'] .section-frame, section[data-composition='split-right'] .section-frame { display: flex; justify-content: center !important; }
+section[data-composition='split-left'] .section-frame > :has(p):not(:has(img)), section[data-composition='split-right'] .section-frame > :has(p):not(:has(img)) { flex: 0 1 auto !important; max-width: 36rem; min-width: 0; }
+/* TAKYON:REVIEW-MARQUEE:v1 — code-owned continuous review scroll */
+section[data-intent='social-proof'] .review-marquee { overflow: hidden; display: flex; contain: inline-size; }
+@media (min-width: 900px) { section[data-intent='social-proof'] .review-marquee .review-cards { flex: none; display: flex; width: max-content; min-width: 100%; box-sizing: border-box; padding-left: 0 !important; padding-right: clamp(1rem, 1.1vw, 1.6rem) !important; gap: clamp(1rem, 1.1vw, 1.6rem) !important; margin: 0; animation: takyon-review-marquee 90s linear infinite; } section[data-intent='social-proof'] .review-marquee .review-cards > * { flex: 0 0 auto !important; box-sizing: border-box !important; width: clamp(300px, 26vw, 380px) !important; min-width: 0; } section[data-intent='social-proof'] .review-marquee:hover .review-cards { animation-play-state: paused; } }
+@media (max-width: 899px) { section[data-intent='social-proof'] .review-marquee .review-cards[aria-hidden='true'] { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { section[data-intent='social-proof'] .review-marquee .review-cards { animation: none !important; } }
+@keyframes takyon-review-marquee { to { transform: translateX(-100%); } }
+@media (max-width: 899px) { section[data-intent] .section-frame { width: min(88%, 42rem); } section[data-intent] { min-height: auto; } section[data-intent]:not([data-intent='close']) { padding-block: clamp(3.5rem, 10vw, 5rem); } }
+/* TAKYON:RESPONSIVE-SECTIONS:v1 — code-owned mobile containment */
+@media (max-width: 899px) { section[data-intent] { overflow-x: clip; } section[data-intent] .section-frame, section[data-intent] .section-frame > * { min-width: 0 !important; } section[data-intent] img { max-width: 100%; } section[data-layout='split-card'] .section-frame { flex-direction: column !important; min-height: 0 !important; } section[data-layout='split-card'] .section-frame > * { width: 100% !important; max-width: none !important; min-width: 0 !important; } section[data-layout='media-caption-grid'] [data-focal='primary'] { flex-direction: column !important; grid-template-columns: 1fr !important; } section[data-layout='media-caption-grid'] .media-caption-grid { flex-direction: column !important; grid-template-columns: 1fr !important; width: 100%; } section[data-layout='media-caption-grid'] [data-media-card] { width: 100% !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; flex: none !important; box-sizing: border-box; } section[data-layout='metrics-row'] [data-focal='primary'] { flex-direction: column !important; grid-template-columns: 1fr !important; } section[data-layout='metrics-row'] [data-focal='primary'] > * { width: 100% !important; min-width: 0 !important; box-sizing: border-box; } section[data-intent='social-proof'] :is(.proof-row, [class*='company-row'], [data-social-proof='reviews'] ul) { flex-direction: column !important; align-items: stretch !important; } section[data-intent='social-proof'] :is(.proof-row, [class*='company-row'], [data-social-proof='reviews'] ul) > * { width: 100% !important; max-width: none !important; min-width: 0 !important; box-sizing: border-box; } .site-footer section[data-intent='close'] .section-frame { width: min(88%, 42rem); } }
+.hero { position: relative; width: 100%; container-type: inline-size; aspect-ratio: 1792 / 1024; max-height: 100vh; max-height: 100svh; background: url(/proto-assets/bg-hero.jpg) top center/cover no-repeat; overflow: hidden; margin: 0; }
+.hero a, .site-nav a { text-decoration: none; }
+.hero .pill, .site-nav .pill, .site-footer section[data-intent='close'] :is(a, button) { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; white-space: nowrap; font-weight: 500; letter-spacing: -0.01em; font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; }
+.hero .nav-row { position: absolute; left: 3%; right: 3%; top: 3.8%; display: flex; align-items: center; justify-content: space-between; font-size: 0.95cqw; }
+.hero .nav-row .brand { font-weight: 700; font-size: 1.34cqw; color: var(--nav-on-hero); white-space: nowrap; }
+.hero .nav-row nav { display: flex; align-items: center; gap: 1.6em; }
+.hero .nav-row nav a { color: var(--nav-on-hero-soft); white-space: nowrap; }
+.hero .nav-row .nav-cta { height: 2.01cqw; padding: 0 1em; background: var(--accent); color: var(--accent-ink); }
+@keyframes site-nav-solidify { from { background: transparent; color: var(--nav-on-hero); } to { background: var(--page-bg); color: var(--nav-on-page); } }
+.site-nav { position: sticky; top: 0; z-index: 50; height: 4.85cqw; margin-bottom: -4.85cqw; display: flex; align-items: center; gap: 1.8em; padding: 0 3%; box-sizing: border-box; font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; background: transparent; color: var(--nav-on-hero); animation: site-nav-solidify linear both; animation-timeline: scroll(); animation-range: 0 4.85cqw; }
+.site-nav nav { display: flex; align-items: center; gap: 1.8em; margin-left: auto; }
+.site-nav nav a { color: inherit; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); font-weight: 400; letter-spacing: -0.01em; }
+.site-nav .pill { font-weight: 500; }
+.site-nav .brand { display: flex; align-items: center; font-size: 0.99cqw; font-weight: 500; letter-spacing: 0.08em; color: inherit; white-space: nowrap; }
+.site-nav .nav-cta { height: 2.01cqw; padding: 0 1em; background: var(--accent); color: var(--accent-ink); }
+.site-nav .nav-login { height: 2.01cqw; padding: 0 1em; box-sizing: border-box; background: transparent; color: inherit; border: 1.5px solid currentColor; }
+.hero .subhead { position: absolute; left: 5.47%; top: 30.25cqw; width: 29.02%; margin: 0; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; line-height: 1.5; color: var(--ink-soft); }
+.hero .cta-row { position: absolute; left: 5.58%; top: 35.24cqw; display: flex; gap: 1em; align-items: flex-start; flex-direction: column; align-items: flex-start; }
+.hero .cta-primary { min-width: 16.80cqw; height: 2.85cqw; padding: 0 0.95em; box-sizing: border-box; font-size: 0.88cqw; background: var(--accent); color: var(--accent-ink); }
+.site-footer { width: 100%; background: color-mix(in srgb, var(--ink) 6%, var(--page-bg)); color: var(--ink); border-radius: clamp(1.1rem, 1.8vw, 2rem) clamp(1.1rem, 1.8vw, 2rem) 0 0; overflow: clip; font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-weight: 400; }
+.site-footer section[data-intent='close'] { min-height: 50svh; background: transparent; color: inherit; display: grid; align-items: center; position: relative; }
+.site-footer section[data-intent='close'] .section-title { color: inherit !important; }
+.site-footer section[data-intent='close'] p { color: color-mix(in srgb, var(--ink) 75%, var(--page-bg)) !important; }
+.site-footer section[data-intent='close'] .section-frame, .site-footer section[data-intent='close'] .section-frame > * { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+.site-footer section[data-intent='close']::before { content: ''; position: absolute; top: 0; left: 50%; translate: -50% 0; width: min(84%, 1200px); height: 1px; background: color-mix(in srgb, var(--ink) 22%, transparent); }
+.site-footer section[data-intent='close'] :is(a, button) { min-width: 13em; min-height: clamp(2.75rem, 3.8cqw, 3.5rem); padding: 0 1.5em !important; border-radius: 999px !important; box-sizing: border-box; background: var(--accent) !important; color: var(--accent-ink) !important; opacity: 1 !important; border: 1.5px solid transparent; text-decoration: none; }
+.site-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 3.4em 5.5cqw; display: flex; align-items: flex-start; justify-content: space-between; gap: 2.2cqw; border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent); }
+.site-footer .footer-brand { font-weight: 400; letter-spacing: 0.13em; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 1.4em; }
+.site-footer a { color: inherit; text-decoration: none; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); font-weight: 400; letter-spacing: -0.01em; }
+/* TAKYON:BRAND-LOGO:v1 — code-owned brand mark */
+.brand, .footer-brand { display: flex; align-items: center; gap: 0.55em; }
+.brand-logo { height: clamp(22px, 1.9cqw, 30px); width: auto; display: block; background: var(--page-bg); border-radius: 22%; padding: 3px; box-sizing: border-box; }
+/* TAKYON:SECTIONS:START */
+section[data-intent='problem'] .section-frame > .problem-row { width: 100% !important; flex: 1 1 100% !important; max-width: none !important; }
+section[data-intent='problem'] .problem-row { display: flex; align-items: stretch; gap: clamp(1.5rem, 3vw, 3rem); min-height: clamp(26rem, 44vw, 40rem); }
+section[data-intent='problem'] .problem-copy { flex: 0 1 54%; align-self: center; }
+section[data-intent='problem'] .problem-copy .section-title { margin: 0 0 1rem; }
+section[data-intent='problem'] .problem-copy .lede { margin: 0 0 1.3rem; color: var(--ink-soft); }
+section[data-intent='problem'] .problem-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+section[data-intent='problem'] .problem-list li { position: relative; padding-left: 1.5rem; color: var(--ink); }
+section[data-intent='problem'] .problem-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--accent); }
+section[data-intent='problem'] .problem-media { flex: 0 1 46%; min-width: 0; margin: 0; position: relative; aspect-ratio: 16 / 10; border-radius: clamp(1rem, 1.6vw, 1.5rem); overflow: hidden; box-shadow: 0 18px 44px color-mix(in srgb, var(--ink) 14%, transparent); }
+section[data-intent='problem'] .problem-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 899px) { section[data-intent='problem'] .problem-row { flex-direction: column; min-height: 0; } }
+section[data-intent='how-it-works'] .section-frame > .hiw-layout { width: 100% !important; flex: 1 1 100% !important; max-width: none !important; }
+section[data-intent='how-it-works'] .hiw-layout { display: flex; align-items: stretch; gap: clamp(1.5rem, 3vw, 3rem); min-height: clamp(26rem, 44vw, 40rem); }
+section[data-intent='how-it-works'] .feature-plane { flex: 0 1 44%; min-width: 0; position: relative; overflow: hidden; border-radius: clamp(1.2rem, 2vw, 1.8rem); background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 8%, var(--page-bg)), color-mix(in srgb, var(--ink) 6%, var(--page-bg))); }
+section[data-intent='how-it-works'] .route-line { position: absolute; left: 8%; right: 8%; top: 50%; height: 2px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 18%, transparent); }
+section[data-intent='how-it-works'] .station { position: absolute; top: calc(50% - 1.5rem); width: 3rem; height: 3rem; border-radius: 50%; background: var(--page-bg); border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--ink)); display: grid; place-items: center; box-shadow: 0 10px 24px color-mix(in srgb, var(--ink) 12%, transparent); }
+section[data-intent='how-it-works'] .station svg { width: 1.4rem; height: 1.4rem; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+section[data-intent='how-it-works'] .station-a { left: 16%; }
+section[data-intent='how-it-works'] .station-b { left: 46%; }
+section[data-intent='how-it-works'] .station-c { left: 76%; }
+section[data-intent='how-it-works'] .ring { position: absolute; inset: -5px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); opacity: 0.4; animation: takyon-ambient-how-it-works-ping 4.5s ease-in-out infinite; }
+section[data-intent='how-it-works'] .station-b .ring { animation-delay: 1.5s; animation-duration: 5.5s; }
+section[data-intent='how-it-works'] .station-c .ring { animation-delay: 3s; animation-duration: 6.5s; }
+section[data-intent='how-it-works'] .sheet { position: absolute; top: calc(50% - 2.3rem); width: 3.4rem; height: 4.6rem; border-radius: 6px; background: #ffffff; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); box-shadow: 0 12px 26px color-mix(in srgb, var(--ink) 14%, transparent); }
+section[data-intent='how-it-works'] .sheet::before, section[data-intent='how-it-works'] .sheet::after { content: ''; position: absolute; left: 16%; right: 16%; height: 2px; border-radius: 2px; background: color-mix(in srgb, var(--ink) 24%, transparent); }
+section[data-intent='how-it-works'] .sheet::before { top: 32%; }
+section[data-intent='how-it-works'] .sheet::after { top: 55%; }
+section[data-intent='how-it-works'] .sheet-a { left: 16%; animation: takyon-ambient-how-it-works-flow 14s linear infinite; animation-delay: -2s; }
+section[data-intent='how-it-works'] .sheet-b { left: 46%; animation: takyon-ambient-how-it-works-flow 18s linear infinite; animation-delay: -8s; }
+section[data-intent='how-it-works'] .sheet-c { left: 76%; animation: takyon-ambient-how-it-works-flow 22s linear infinite; animation-delay: -14s; }
+section[data-intent='how-it-works'] .hiw-copy { flex: 0 1 56%; align-self: center; }
+section[data-intent='how-it-works'] .hiw-copy .section-title { margin: 0 0 1rem; }
+section[data-intent='how-it-works'] .hiw-copy .lede { margin: 0 0 1.4rem; color: var(--ink-soft); }
+section[data-intent='how-it-works'] .step-grid { display: grid; gap: 0.9rem; }
+section[data-intent='how-it-works'] .step-card .card-content { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 0.9rem; align-items: baseline; }
+section[data-intent='how-it-works'] .step-num { grid-row: 1 / span 2; font-size: 1.5rem; font-weight: 300; color: var(--accent); line-height: 1.2; }
+section[data-intent='how-it-works'] .step-card .card-title { margin: 0; }
+section[data-intent='how-it-works'] .step-card p { margin: 0; color: var(--ink-soft); }
+@keyframes takyon-ambient-how-it-works-flow { 0% { left: -14%; opacity: 0; } 7% { opacity: 1; } 93% { opacity: 1; } 100% { left: 110%; opacity: 0; } }
+@keyframes takyon-ambient-how-it-works-ping { 0% { transform: scale(0.85); opacity: 0.55; } 65% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1.3); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { section[data-intent='how-it-works'] .sheet, section[data-intent='how-it-works'] .ring { animation: none !important; } }
+@media (max-width: 899px) { section[data-intent='how-it-works'] .hiw-layout { flex-direction: column; min-height: 0; } section[data-intent='how-it-works'] .feature-plane { min-height: 22rem; } }
+section[data-intent='offerings'] .offerings-head { text-align: center; max-width: 44rem; margin: 0 auto clamp(2rem, 3.4vw, 3rem); }
+section[data-intent='offerings'] .offerings-head .section-title { margin: 0 0 0.9rem; }
+section[data-intent='offerings'] .offerings-head .lede { margin: 0; color: var(--ink-soft); }
+section[data-intent='offerings'] .media-caption-grid { display: flex; gap: clamp(1.5rem, 2.5vw, 2.5rem); align-items: stretch; }
+section[data-intent='offerings'] .media-card { flex: 1 1 0; min-width: 0; overflow: hidden; margin: 0; }
+section[data-intent='offerings'] .media-frame { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+section[data-intent='offerings'] .media-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+section[data-intent='offerings'] .media-card .card-content.caption { padding-inline: clamp(1rem, 1.8vw, 1.6rem); padding-block: clamp(1rem, 1.4vw, 1.3rem); }
+section[data-intent='offerings'] .media-card .card-title { margin: 0 0 0.45rem; }
+section[data-intent='offerings'] .media-card p { margin: 0; color: var(--ink-soft); }
+section[data-intent='metrics'] { background: color-mix(in srgb, var(--ink) 4%, #ffffff); }
+section[data-intent='metrics'] .metrics-head { text-align: center; margin: 0 auto clamp(1.8rem, 3vw, 2.6rem); }
+section[data-intent='metrics'] .metrics-head .section-title { margin: 0; }
+section[data-intent='metrics'] .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.2rem, 2.4vw, 2.4rem); }
+section[data-intent='metrics'] .metric { text-align: left; }
+section[data-intent='metrics'] .metric-num { display: block; font-size: clamp(2.6rem, 4.6vw, 4rem); font-weight: 200; line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+section[data-intent='metrics'] .metric-label { margin: 0.7rem 0 0.9rem; color: var(--ink-soft); }
+section[data-intent='metrics'] .metric-bar { display: block; height: 4px; width: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 45%, var(--page-bg))); transform-origin: left center; animation: takyon-ambient-metrics-draw 6.5s ease-in-out infinite; }
+section[data-intent='metrics'] .metric:nth-child(2) .metric-bar { animation-delay: 0.7s; }
+section[data-intent='metrics'] .metric:nth-child(3) .metric-bar { animation-delay: 1.4s; }
+section[data-intent='metrics'] .metric:nth-child(4) .metric-bar { animation-delay: 2.1s; }
+@keyframes takyon-ambient-metrics-draw { 0% { transform: scaleX(0); } 20% { transform: scaleX(1); } 75% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { section[data-intent='metrics'] .metric-bar { animation: none !important; } }
+section[data-intent='social-proof'] .proof-panel .section-title { margin: 0 0 1rem; }
+section[data-intent='social-proof'] [data-social-proof='companies'] { margin: 0 0 1.2rem; }
+section[data-intent='social-proof'] .trust-line { margin: 0 0 0.6rem; font-weight: 500; color: var(--ink); }
+section[data-intent='social-proof'] .company-names { display: flex; flex-wrap: wrap; gap: 0.55rem 1.4rem; color: var(--ink-soft); }
+section[data-intent='social-proof'] .company-names span { font-weight: 500; letter-spacing: 0.02em; }
+section[data-intent='social-proof'] .reviews-label { margin: 0 0 0.7rem; }
+section[data-intent='social-proof'] .review-card { border-radius: clamp(0.8rem, 1.2vw, 1.1rem); padding: 1rem 1.15rem; }
+section[data-intent='social-proof'] .review-quote { margin: 0 0 0.45rem; color: var(--ink); }
+section[data-intent='social-proof'] .review-author { margin: 0; color: var(--ink-soft); }
+section[data-intent='close'] .section-frame { text-align: center; }
+section[data-intent='close'] .section-title { margin: 0 0 0.9rem; }
+section[data-intent='close'] .close-sub { max-width: 38rem; margin: 0 auto 1.6rem; color: inherit; opacity: 0.85; }
+/* TAKYON:SECTIONS:END */
+/* TAKYON:SCROLL-MOTION:rise */ @media (prefers-reduced-motion: no-preference) { @keyframes takyon-scroll-rise { from { opacity: 0; transform: translateY(72px) scale(0.94); } to { opacity: 1; transform: none; } } section[data-intent]:not([data-intent='close']) > *:not(:only-child), section[data-intent]:not([data-intent='close']) > *:only-child > * { animation: takyon-scroll-rise cubic-bezier(0.25, 0.46, 0.45, 0.94) both; animation-timeline: view(); animation-range: cover 2% cover 46%; } section[data-intent]:not([data-intent='close']) > *:not(:only-child):nth-child(2), section[data-intent]:not([data-intent='close']) > *:only-child > *:nth-child(2) { animation-range: cover 11% cover 55%; } section[data-intent]:not([data-intent='close']) > *:not(:only-child):nth-child(3), section[data-intent]:not([data-intent='close']) > *:only-child > *:nth-child(3) { animation-range: cover 20% cover 64%; } section[data-intent]:not([data-intent='close']) > *:not(:only-child):nth-child(n+4), section[data-intent]:not([data-intent='close']) > *:only-child > *:nth-child(n+4) { animation-range: cover 29% cover 73%; } }
+@media (max-width: 720px) { .hero { aspect-ratio: auto; padding: 0; background-image: none; box-sizing: border-box; } .hero::before { content: ''; display: block; width: 100%; aspect-ratio: 1792 / 1024; background: url(/proto-assets/bg-hero.jpg) top center/cover no-repeat; } .hero h1, .hero .subhead, .hero .cta-row, .hero .cta-primary, .hero .cta-secondary, .hero .nav, .hero .brand, .hero .nav-cta { position: static; width: auto; height: auto; margin: 0 0 4vw 0; } .hero .subhead { margin: 1.4rem 6vw 0; } .hero .cta-row { margin: 1.1rem 6vw 1.6rem; } .site-nav .brand-logo, .site-footer .brand-logo { height: clamp(26px, 6vw, 32px); } .hero .pill { padding: 2.4vw 5.5vw; display: inline-flex; } .hero .cta-primary, .hero .cta-secondary { font-size: 0.88rem; } .site-nav { position: static; height: auto; margin-bottom: 0; padding: 4vw 6vw; flex-wrap: wrap; gap: 3vw; background: var(--page-bg); color: var(--nav-on-page); animation: none; } .site-nav nav { width: 100%; order: 2; margin-left: 0; flex-wrap: wrap; gap: 0.75rem 1.1rem; } .site-nav .nav-btns { order: 3; margin-left: 0; flex-wrap: wrap; } .site-nav .nav-login, .site-nav .nav-cta, .site-nav .nav-cta-2 { min-width: 0; height: auto; padding: 0.5em 0.85em; font-size: 0.78rem; } .site-footer .footer-inner { padding: 8vw 6vw; flex-direction: column; } }
+
+/* TAKYON:PAGES-BASE:START (code-owned; model CSS is appended below the END marker) */
+/* Interior pages have no hero behind the nav: force the shell nav's SOLIDIFIED state
+   (page background + ink, no scroll animation, no hero text-shadows) so the chrome is
+   readable from the first pixel. Code-owned — page CSS may not touch the shell. */
+body:has(main[data-takyon-page]) .site-nav { background: var(--page-bg); color: var(--ink); animation: none; }
+body:has(main[data-takyon-page]) .site-nav :is(a, span, strong) { text-shadow: none; }
+/* CTA pills keep the landing's own ink (accent background + --accent-ink text): forcing
+   `inherit` here painted page ink on the amber pill — 1.9:1, finalize refused (renderkit). */
+body:has(main[data-takyon-page]) .site-nav :is(a, span, strong):not(.nav-cta, .cta-primary) { color: inherit; }
+/* Pin the content ink to the palette: on a dark landing (--page-bg near black) the
+   browser-default black text is invisible (live-proven: meridian's legal pages). */
+main[data-takyon-page] { display: block; width: min(88%, 62rem); margin: 0 auto; padding: 7.5rem 0 5rem; color: var(--ink); background: var(--page-bg); }
+/* Page titles mirror the landing's section-title role exactly, centered (operator). */
+main[data-takyon-page] .page-title { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 300; font-size: clamp(30px, 3.2cqw, 38.4px); line-height: 1.16; letter-spacing: 0.005em; text-align: center; margin: 0 0 1.6em; }
+main[data-takyon-page] :is(p, li, dd) { font-family: 'Avenir Next', 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-size: clamp(0.78rem, 0.96cqw, 0.94rem); line-height: 1.6; }
+main[data-takyon-page] :is(h2, h3, dt) { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; }
+main[data-takyon-page='privacy'] section, main[data-takyon-page='terms'] section { margin-bottom: 2.2em; }
+main[data-takyon-page='blog'] .blog-empty { text-align: center; max-width: 34rem; margin: 0 auto; }
+main[data-takyon-page='blog'] .blog-empty-lead { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; font-size: clamp(1.05rem, 1.35cqw, 1.3rem); }
+main[data-takyon-page='blog'] .blog-empty a { color: var(--accent); }
+/* Constrained-width content blocks center in the page column (live-proven: a
+   model-set max-width left the faq list hugging the left edge). */
+main[data-takyon-page] :is(.faq-list, .plan-card) { margin-inline: auto; }
+/* The plan card is the pricing page's centerpiece: size is code-owned (operator —
+   a model-set 34rem card read too small) and wins over page CSS by specificity. */
+main[data-takyon-page='pricing'] .plan-card { width: 100%; max-width: 46rem; margin-block: 2.5rem; padding: clamp(2.5rem, 3.5cqw, 4rem) clamp(1.8rem, 2.6cqw, 3rem); box-sizing: border-box; }
+/* FAQ accordion (native <details>, no JS): bar summaries with a +/- indicator. */
+main[data-takyon-page='faq'] details.faq-item { margin: 0 0 0.7em; }
+main[data-takyon-page='faq'] summary.faq-q { display: flex; align-items: center; justify-content: space-between; gap: 1em; cursor: pointer; list-style: none; padding: 0.95em 1.2em; border-radius: 0.6rem; background: color-mix(in srgb, var(--ink) 8%, var(--page-bg)); color: var(--ink); font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 500; font-size: clamp(1.05rem, 1.35cqw, 1.3rem); }
+main[data-takyon-page='faq'] summary.faq-q::-webkit-details-marker { display: none; }
+main[data-takyon-page='faq'] summary.faq-q::after { content: '+'; font-weight: 600; color: var(--ink); flex: none; }
+main[data-takyon-page='faq'] details[open] summary.faq-q::after { content: '\2212'; }
+main[data-takyon-page='faq'] .faq-a { padding: 1em 1.2em 1.4em; }
+/* TAKYON:PAGES-BASE:END */
+
+/* TAKYON:PAGE-CSS:pricing:START */
+main[data-takyon-page='pricing'] .plan-card h2 { text-align: center; font-size: clamp(1.1rem, 1.5cqw, 1.4rem); margin: 0 0 0.3em; }
+main[data-takyon-page='pricing'] .plan-price { display: flex; align-items: baseline; justify-content: center; gap: 0.4em; margin: 0 0 1.4em; }
+main[data-takyon-page='pricing'] .plan-price [data-plan-token='price'] { font-family: system-ui, 'Segoe UI', sans-serif; font-weight: 300; font-size: clamp(2.6rem, 5cqw, 3.4rem); line-height: 1; }
+main[data-takyon-page='pricing'] .plan-interval { opacity: 0.72; font-size: clamp(0.9rem, 1.1cqw, 1.05rem); }
+main[data-takyon-page='pricing'] .plan-card ul { list-style: none; margin: 0 0 1.8em; padding: 0; display: grid; gap: 0.75em; }
+main[data-takyon-page='pricing'] .plan-card li { position: relative; padding-left: 1.5em; }
+main[data-takyon-page='pricing'] .plan-card li::before { content: '-'; position: absolute; left: 0.1em; color: var(--accent); }
+main[data-takyon-page='pricing'] .plan-card .cta-primary { display: flex; justify-content: center; width: 100%; box-sizing: border-box; padding: 0.85em 1.4em; border-radius: 999px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600; }
+/* TAKYON:PAGE-CSS:pricing:END */
+
+/* TAKYON:PAGE-CSS:faq:START */
+main[data-takyon-page='faq'] .faq-list { max-width: 46rem; }
+main[data-takyon-page='faq'] .faq-a p { margin: 0 0 0.6em; }
+main[data-takyon-page='faq'] .faq-a p:last-child { margin: 0; }
+/* TAKYON:PAGE-CSS:faq:END */
+
+/* TAKYON:PAGE-CSS:product:START */
+main[data-takyon-page='product'] .product-story { display: grid; gap: 2rem; }
+main[data-takyon-page='product'] .product-block { padding: 2rem 2.4rem; border-radius: 0.9rem; border: 1px solid color-mix(in srgb, var(--ink) 12%, var(--page-bg)); background: color-mix(in srgb, var(--ink) 5%, var(--page-bg)); }
+main[data-takyon-page='product'] .product-block h2 { font-size: clamp(1.15rem, 1.6cqw, 1.45rem); margin: 0 0 0.55em; }
+main[data-takyon-page='product'] .product-block p { margin: 0 0 0.85em; }
+main[data-takyon-page='product'] .product-block ul { margin: 0; padding-left: 1.2em; display: grid; gap: 0.45em; }
+/* TAKYON:PAGE-CSS:product:END */
+
+/* stage-4 port: tailwind preflight/utility collision guard */
+section[data-intent] .orbit-ring, section[data-intent] .orbit-hub, main[data-takyon-page] .orbit-ring { box-shadow: none !important; outline: none !important; }
+/* preflight sets svg{display:block}, stacking the prototype's inline icon/star
+   SVGs vertically; restore the browser default the prototype rendered under. */
+section[data-intent] svg, section.hero svg, main[data-takyon-page] svg { display: inline; }

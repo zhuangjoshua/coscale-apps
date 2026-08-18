@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pagewright</title>
+<link rel="stylesheet" href="/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>📄</text></svg>" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">▤</span> Pagewright</div>
+    <input id="tpl-name" class="tpl-name" placeholder="Untitled template" />
+    <div class="topbar-actions">
+      <span id="save-state" class="save-state"></span>
+      <select id="preview-format" title="Preview format">
+        <option value="pdf">PDF</option>
+        <option value="png">PNG</option>
+      </select>
+      <button id="btn-refresh" class="btn">Refresh preview</button>
+      <button id="btn-download" class="btn">Download</button>
+      <button id="btn-save" class="btn btn-primary">Save</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <aside class="rail">
+      <nav class="rail-tabs">
+        <button class="rail-tab is-active" data-rail="templates">Templates</button>
+        <button class="rail-tab" data-rail="keys">API keys</button>
+        <button class="rail-tab" data-rail="jobs">Activity</button>
+      </nav>
+
+      <section id="rail-templates" class="rail-panel">
+        <button id="btn-new" class="btn btn-block">+ New template</button>
+        <ul id="template-list" class="tpl-list"></ul>
+      </section>
+
+      <section id="rail-keys" class="rail-panel" hidden>
+        <button id="btn-new-key" class="btn btn-block">+ Create key</button>
+        <ul id="key-list" class="key-list"></ul>
+        <p class="rail-hint">Send as <code>X-API-KEY</code> to <code>/v1/create</code>.</p>
+      </section>
+
+      <section id="rail-jobs" class="rail-panel" hidden>
+        <ul id="job-list" class="job-list"></ul>
+      </section>
+    </aside>
+
+    <section class="editor">
+      <nav class="editor-tabs">
+        <button class="editor-tab is-active" data-pane="blocks">Blocks</button>
+        <button class="editor-tab" data-pane="data">Data</button>
+        <button class="editor-tab" data-pane="page">Page</button>
+        <button class="editor-tab" data-pane="theme">Theme</button>
+        <button class="editor-tab" data-pane="api">API</button>
+      </nav>
+
+      <div id="pane-blocks" class="pane">
+        <div id="block-list" class="block-list"></div>
+        <div class="add-block">
+          <select id="add-block-type"></select>
+          <button id="btn-add-block" class="btn">Add block</button>
+        </div>
+      </div>
+
+      <div id="pane-data" class="pane" hidden>
+        <p class="pane-hint">Sample JSON. The API merges the same shape into this template.</p>
+        <textarea id="data-json" class="code" spellcheck="false"></textarea>
+        <div id="data-error" class="error-line"></div>
+        <div class="pane-row">
+          <button id="btn-stress" class="btn">Stress test: 200 rows</button>
+          <span class="pane-hint">Proves pagination and repeating table headers.</span>
+        </div>
+      </div>
+
+      <div id="pane-page" class="pane" hidden>
+        <div class="grid2">
+          <label>Paper
+            <select id="page-format">
+              <option>A4</option><option>Letter</option><option>Legal</option>
+              <option>A3</option><option>A5</option>
+            </select>
+          </label>
+          <label>Orientation
+            <select id="page-orientation">
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </label>
+          <label>Margin top <input id="margin-top" /></label>
+          <label>Margin right <input id="margin-right" /></label>
+          <label>Margin bottom <input id="margin-bottom" /></label>
+          <label>Margin left <input id="margin-left" /></label>
+        </div>
+        <label class="check"><input type="checkbox" id="header-enabled" /> Running header</label>
+        <textarea id="header-html" class="code code-sm" spellcheck="false"></textarea>
+        <label class="check"><input type="checkbox" id="footer-enabled" /> Running footer</label>
+        <textarea id="footer-html" class="code code-sm" spellcheck="false"></textarea>
+        <p class="pane-hint">
+          <code>&lt;span class="pageNumber"&gt;&lt;/span&gt;</code> and
+          <code>&lt;span class="totalPages"&gt;&lt;/span&gt;</code> are filled by the print engine.
+        </p>
+      </div>
+
+      <div id="pane-theme" class="pane" hidden>
+        <div class="grid2">
+          <label>Accent <input type="color" id="theme-accent" /></label>
+          <label>Ink <input type="color" id="theme-ink" /></label>
+          <label>Muted <input type="color" id="theme-muted" /></label>
+          <label>Rule <input type="color" id="theme-rule" /></label>
+          <label>Base size <input id="theme-size" /></label>
+          <label>Font stack <input id="theme-font" /></label>
+        </div>
+        <p class="pane-hint">Extra CSS, appended after the base stylesheet.</p>
+        <textarea id="theme-css" class="code code-sm" spellcheck="false"></textarea>
+      </div>
+
+      <div id="pane-api" class="pane" hidden>
+        <p class="pane-hint">Copy-paste request for this template.</p>
+        <pre id="api-snippet" class="snippet"></pre>
+        <p class="pane-hint">Detected data paths</p>
+        <ul id="path-list" class="path-list"></ul>
+      </div>
+    </section>
+
+    <section class="preview">
+      <div class="preview-bar">
+        <span id="preview-meta" class="preview-meta">—</span>
+        <span id="preview-spinner" class="spinner" hidden>rendering…</span>
+      </div>
+      <div class="preview-stage">
+        <iframe id="preview-frame" title="Preview"></iframe>
+        <img id="preview-image" alt="Preview" hidden />
+        <div id="preview-error" class="preview-error" hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

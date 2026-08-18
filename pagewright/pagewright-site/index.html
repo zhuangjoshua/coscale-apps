@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Free seeded brand mark; vite copies public/favicon.svg into dist. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <title>PageWright</title>
+    <meta name="description" content="PageWright." />
+    <!-- Technical SEO floor shipped on every build (canonical, Open Graph, Twitter, JSON-LD). -->
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PageWright" />
+    <meta property="og:title" content="PageWright" />
+    <meta property="og:description" content="PageWright." />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/brand-logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PageWright" />
+    <meta name="twitter:description" content="PageWright." />
+    <!-- Google Search Console ownership: the platform service-account's verification META tag,
+         baked into every build at seed time so the bootstrap GSC verify always finds it on the
+         live edge regardless of which build is served (no R2/pointer race). Empty if the GSC SA
+         is unavailable at seed time, in which case the GSC tool's own injection is the fallback. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "PageWright",
+        "description": "PageWright.",
+        "url": "%VITE_SITE_URL%/",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Web"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

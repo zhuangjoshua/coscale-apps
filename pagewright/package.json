@@ -1,0 +1,26 @@
+{
+  "name": "pagewright",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "start": "tsx server.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "lengths": "tsx scripts/lengths.ts",
+    "typecheck": "tsc --noEmit",
+    "build:site": "npm --prefix pagewright-site install --no-audit --no-fund && npm --prefix pagewright-site run build",
+    "build": "npm run build:site"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.49.0",
+    "tsx": "^4.19.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.9.0",
+    "typescript": "^7.0.2"
+  }
+}
