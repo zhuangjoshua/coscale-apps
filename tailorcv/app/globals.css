@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* Computer Modern — the LaTeX font Jake's Resume is set in. */
+@font-face {
+  font-family: "CMU Serif";
+  src: url("/fonts/cmu-serif-500-roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "CMU Serif";
+  src: url("/fonts/cmu-serif-500-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "CMU Serif";
+  src: url("/fonts/cmu-serif-700-roman.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "CMU Serif";
+  src: url("/fonts/cmu-serif-700-italic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* TailorCV design tokens — matched to the marketing pages in app/(marketing)/_site:
+   white page, cool ink, saturated blue accent, pill buttons, soft cards. */
+:root {
+  --background: #ffffff;
+  --paper: #f7f8fa; /* color-mix(ink 4%, white) — the site's tinted section bg */
+  --foreground: #17212b; /* --ink */
+  --primary: #2563eb; /* --accent */
+  --primary-dark: #1d4ed8;
+  --muted: #eef1f5;
+  --muted-foreground: #59636e; /* --ink-soft */
+  --line: #e2e6eb; /* ink @ ~10% */
+  --ok: #15803d;
+  --warn: #b45309;
+  --card: #fafbfc; /* color-mix(ink 3%, white) */
+  --shadow-card: 0 14px 34px rgba(23, 33, 43, 0.08);
+  --font-sans: "Avenir Next", var(--font-montserrat), "Segoe UI", system-ui, sans-serif;
+  --font-heading: system-ui, "Segoe UI", sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-paper: var(--paper);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-line: var(--line);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-card: var(--card);
+  --radius-brand: 12px;
+  --radius-card: 1.25rem;
+  --shadow-card: var(--shadow-card);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  letter-spacing: -0.005em;
+}
+
+/* Landing-page typography: light, airy headings; medium-weight labels.
+   Scoped out of .resume — the document itself is Jake's format in CMU Serif
+   and must never inherit app chrome styling. */
+:where(h1, h2):not(.resume *) {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  letter-spacing: 0.005em;
+  line-height: 1.16;
+}
+:where(h1, h2):not(.resume *) strong { font-weight: 700; }
+:where(h3):not(.resume *) { font-weight: 500; letter-spacing: -0.01em; }
+.resume { letter-spacing: normal; }
+
+/* Landing-style card surface (mirrors .card-surface on the marketing site). */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Pill buttons, as on the landing hero/footer. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, translate 150ms ease;
+  cursor: pointer;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-outline { background: transparent; color: var(--foreground); border: 1.5px solid currentColor; }
+.btn-outline:hover:not(:disabled) { background: var(--muted); }
+.btn-ghost { background: transparent; color: var(--muted-foreground); }
+.btn-ghost:hover:not(:disabled) { color: var(--foreground); background: var(--muted); }
+
+/* Inputs: soft rounded, blue focus ring like the site's --tk-ring. */
+.field {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-brand);
+  background: var(--background);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+
+@media print {
+  body {
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
