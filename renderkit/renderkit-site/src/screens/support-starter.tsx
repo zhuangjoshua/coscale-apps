@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { businessDisplayName } from "../lib/branding";
 import { resolveViewerCta, useViewerAccess } from "../lib/hooks";
 import { useProductAuth } from "../lib/product-auth";
-import { defaultPlanLimitLabels, defaultPlanPriceLabel } from "../lib/takyon";
+import { defaultPlanLimitLabels, defaultPlanPriceLabel } from "../lib/site-config";
 
 const faqItems = [
   {
@@ -93,9 +93,9 @@ export function PricingScreen() {
               {access.loading ? (
                 <div className="h-12 animate-pulse rounded bg-muted" />
               ) : access.authenticated ? (
-                <Link to={cta.primaryHref} className="inline-flex h-12 items-center justify-center rounded bg-primary px-6 font-medium text-primary-foreground hover:opacity-90">
+                <a href={cta.primaryHref} className="inline-flex h-12 items-center justify-center rounded bg-primary px-6 font-medium text-primary-foreground hover:opacity-90">
                   {cta.primaryLabel}
-                </Link>
+                </a>
               ) : (
                 <>
                   <button type="button" onClick={() => void auth.signUpWithGoogle()} className="h-12 rounded bg-primary px-6 font-medium text-primary-foreground hover:opacity-90">Sign up</button>

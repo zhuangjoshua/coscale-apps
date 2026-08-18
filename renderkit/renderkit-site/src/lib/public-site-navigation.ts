@@ -16,7 +16,7 @@ export function usePublicSiteNavigation(access: PublicSiteHeaderAccess) {
     access,
     productName: businessDisplayName(),
     brandMarkSrc: brandMarkDataUri(),
-    homeHref: access.authenticated ? "/app" : "/",
+    homeHref: "/",
     publicItems: [
       { href: "/", label: "Home" },
       { href: "/pricing", label: "Pricing" },
@@ -24,10 +24,8 @@ export function usePublicSiteNavigation(access: PublicSiteHeaderAccess) {
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },
     ] satisfies PublicNavigationItem[],
-    accountItems: [
-      { href: "/app", label: "App" },
-      { href: "/app/profile", label: "Account" },
-    ] satisfies PublicNavigationItem[],
+    // Server-owned (/app): rendered as plain anchors so they leave the SPA.
+    accountItems: [{ href: "/app", label: "App" }] satisfies PublicNavigationItem[],
     authBusy: auth.busy,
     authDisabled: !auth.available || !auth.configured || auth.busy,
     logIn: auth.signInWithGoogle,

@@ -250,6 +250,7 @@ const app = express();
 app.use(express.json({ limit: "8mb" }));
 app.use("/out", express.static(OUT));
 app.use("/fonts", express.static(FONTS));
+app.use("/vendor", express.static(path.join(ROOT, "vendor")));
 
 // ============================================================ AUTH
 
@@ -795,13 +796,14 @@ app.post("/smartcrop", async (req, res) => {
     const b64 = `data:image/*;base64,${fs.readFileSync(tmp).toString("base64")}`;
     const page = await (await getBrowser()).newPage({ viewport: { width: 100, height: 100 } });
     try {
-      await page.goto("about:blank");
+      // load a same-origin page so the vendored ES module + wasm resolve locally (no CDN)
+      await page.goto(`http://localhost:${PORT}/vendor/mediapipe/blank.html`);
       const dataUrl: string = await page.evaluate(async ({ imgUrl, W, H }) => {
-        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs" as any);
+        const vision = await import("/vendor/mediapipe/vision_bundle.mjs" as any);
         const files = await vision.FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+          "/vendor/mediapipe/wasm");
         const detector = await vision.FaceDetector.createFromOptions(files, {
-          baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite" },
+          baseOptions: { modelAssetPath: "/vendor/mediapipe/blaze_face_short_range.tflite" },
           runningMode: "IMAGE",
         });
         const img = new Image();

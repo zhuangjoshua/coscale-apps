@@ -1,11 +1,11 @@
-[data-takyon-public-header] { background: var(--tk-card); border-bottom: 1px solid var(--tk-border); position: sticky; top: 0; z-index: 50; }
-[data-takyon-header-inner] { max-width: 1240px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-[data-takyon-brand] { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--tk-foreground); font-weight: 700; font-size: 22px; }
-[data-takyon-brand-mark] { border-radius: 9px; }
-[data-takyon-signed-out-navigation], [data-takyon-account-navigation] { display: flex; align-items: center; gap: 8px; }
-[data-takyon-public-navigation] { display: flex; align-items: center; gap: 4px; margin-right: 8px; }
-[data-takyon-navigation-link] { text-decoration: none; color: var(--tk-muted-foreground); font-size: 15px; font-weight: 500; padding: 8px 12px; border-radius: 6px; white-space: nowrap; }
-[data-takyon-navigation-link]:hover { color: var(--tk-foreground); background: var(--tk-muted); }
-[data-takyon-auth-action] { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--tk-border); background: var(--tk-card); color: var(--tk-foreground); white-space: nowrap; }
-[data-takyon-auth-action="signup"] { background: var(--tk-primary); color: var(--tk-primary-foreground); border-color: var(--tk-primary); }
-[data-takyon-auth-action]:disabled { opacity: 0.5; cursor: not-allowed; }
+[data-rk-public-header] { background: var(--tk-card); border-bottom: 1px solid var(--tk-border); position: sticky; top: 0; z-index: 50; }
+[data-rk-header-inner] { max-width: 1240px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+[data-rk-brand] { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--tk-foreground); font-weight: 700; font-size: 22px; }
+[data-rk-brand-mark] { border-radius: 9px; }
+[data-rk-signed-out-navigation], [data-rk-account-navigation] { display: flex; align-items: center; gap: 8px; }
+[data-rk-public-navigation] { display: flex; align-items: center; gap: 4px; margin-right: 8px; }
+[data-rk-navigation-link] { text-decoration: none; color: var(--tk-muted-foreground); font-size: 15px; font-weight: 500; padding: 8px 12px; border-radius: 6px; white-space: nowrap; }
+[data-rk-navigation-link]:hover { color: var(--tk-foreground); background: var(--tk-muted); }
+[data-rk-auth-action] { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--tk-border); background: var(--tk-card); color: var(--tk-foreground); white-space: nowrap; }
+[data-rk-auth-action="signup"] { background: var(--tk-primary); color: var(--tk-primary-foreground); border-color: var(--tk-primary); }
+[data-rk-auth-action]:disabled { opacity: 0.5; cursor: not-allowed; }

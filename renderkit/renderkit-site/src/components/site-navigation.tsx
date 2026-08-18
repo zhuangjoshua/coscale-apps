@@ -9,46 +9,47 @@ export function PublicSiteHeader({ access }: { access: PublicSiteHeaderAccess })
   const navigation = usePublicSiteNavigation(access);
 
   return (
-    <header data-takyon-public-header="true">
-      <div data-takyon-header-inner="true">
-        <Link to={navigation.homeHref} data-takyon-brand="true">
+    <header data-rk-public-header="true">
+      <div data-rk-header-inner="true">
+        <Link to="/" data-rk-brand="true">
           {navigation.brandMarkSrc ? (
           <img
             src={navigation.brandMarkSrc}
             alt={`${navigation.productName} logo`}
             width={40}
             height={40}
-            data-takyon-brand-mark="true"
+            data-rk-brand-mark="true"
           />
           ) : null}
-          <span data-takyon-brand-name="true">{navigation.productName}</span>
+          <span data-rk-brand-name="true">{navigation.productName}</span>
         </Link>
 
         {access.loading ? (
-          <div data-takyon-navigation-loading="true" role="status" aria-live="polite">
+          <div data-rk-navigation-loading="true" role="status" aria-live="polite">
             Loading navigation
           </div>
         ) : access.authenticated ? (
-          <nav aria-label="Account navigation" data-takyon-account-navigation="true">
+          <nav aria-label="Account navigation" data-rk-account-navigation="true">
+            {/* /app is served by the express server: plain anchors, full page load. */}
             {navigation.accountItems.map((item) => (
-              <Link key={item.href} to={item.href} data-takyon-navigation-link="true">
+              <a key={item.href} href={item.href} data-rk-navigation-link="true">
                 {item.label}
-              </Link>
+              </a>
             ))}
             <button
               type="button"
               onClick={() => void navigation.signOut()}
               disabled={navigation.authBusy}
-              data-takyon-auth-action="signout"
+              data-rk-auth-action="signout"
             >
               Sign out
             </button>
           </nav>
         ) : (
-          <div data-takyon-signed-out-navigation="true">
-            <nav aria-label="Public navigation" data-takyon-public-navigation="true">
+          <div data-rk-signed-out-navigation="true">
+            <nav aria-label="Public navigation" data-rk-public-navigation="true">
               {navigation.publicItems.map((item) => (
-                <Link key={item.href} to={item.href} data-takyon-navigation-link="true">
+                <Link key={item.href} to={item.href} data-rk-navigation-link="true">
                   {item.label}
                 </Link>
               ))}
@@ -57,7 +58,7 @@ export function PublicSiteHeader({ access }: { access: PublicSiteHeaderAccess })
               type="button"
               onClick={() => void navigation.logIn()}
               disabled={navigation.authDisabled}
-              data-takyon-auth-action="login"
+              data-rk-auth-action="login"
             >
               Log in
             </button>
@@ -65,7 +66,7 @@ export function PublicSiteHeader({ access }: { access: PublicSiteHeaderAccess })
               type="button"
               onClick={() => void navigation.signUp()}
               disabled={navigation.authDisabled}
-              data-takyon-auth-action="signup"
+              data-rk-auth-action="signup"
             >
               Sign up
             </button>

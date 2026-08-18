@@ -17,10 +17,7 @@
     "noEmit": true,
     "allowJs": true,
     "checkJs": true,
-    "baseUrl": ".",
-    "paths": {
-      "@takyon/*": ["./_takyon/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src", "vite.config.ts"]
 }

@@ -1,17 +1,16 @@
 {
-  "name": "takyon-product-scaffold",
+  "name": "renderkit-site",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Canonical Takyon product frontend scaffold. Static SPA only; no server code.",
+  "description": "RenderKit public site. Static SPA only; no server code.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.actions.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2.108.2",
     "framer-motion": "12.42.2",
     "lucide-react": "1.23.0",
     "react": "18.3.1",
