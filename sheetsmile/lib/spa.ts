@@ -58,8 +58,14 @@ let cached: string | null = null;
 
 export function spaResponse(): Response {
   if (!cached) {
+    const appUrl = process.env.APP_URL || "http://localhost:3000";
     cached = fs
       .readFileSync(SHELL_PATH, "utf8")
+      // The shell was built with the site preview's origin baked into its SEO
+      // tags (canonical, og:url, og:image, JSON-LD). Point them at this
+      // deployment instead so they are correct on any domain.
+      .replaceAll("http://localhost:8833brand-logo.png", `${appUrl}/logo.png`)
+      .replaceAll("http://localhost:8833", appUrl)
       // The Takyon shell points at a favicon.svg we don't ship. Swap in the
       // real icons — Safari needs a genuine .ico and honours explicit tags.
       // Icon URL is versioned: Safari caches favicons by URL and will not
